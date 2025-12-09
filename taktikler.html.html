@@ -1,0 +1,634 @@
+﻿<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>VALO-HUB | Harita & Ajan Filtreli Lineup Arşivi</title>
+    <meta name="description" content="Valorant haritaları ve ajanlarına göre filtrelenebilir en güncel Lineup Arşivi." />
+    
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;800;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+    
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <script>
+        // Tailwind konfigürasyonu
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Poppins', 'sans-serif'],
+                    },
+                    colors: {
+                        'primary-dark': '#4ADE80', 
+                        'secondary-dark': '#F97316', 
+                        'primary-gaming': '#F472B6',
+                        'secondary-gaming': '#A855F7',
+                    }
+                }
+            }
+        }
+    </script>
+    
+    <style>
+        /* Temel CSS Değişkenleri */
+        :root {
+            --primary-color: #4ADE80;
+            --secondary-color: #F97316;
+            --primary-border-color: #4ade8030;
+            --primary-shadow-color: rgba(74, 222, 128, 0.5);
+            --card-bg-color: #18181b; 
+            --article-bg-color: #0a0a0a; 
+            --text-color: #ffffff;
+            --text-muted-color: #ccc;
+        }
+
+        /* Tema ve Animasyon Geçişleri */
+        body { transition: background-color 0.5s ease; }
+        * { transition: color 0.5s ease, background-color 0.5s ease, border-color 0.5s ease, box-shadow 0.5s ease; }
+
+        .scroll-text { white-space: nowrap; animation: scroll 45s linear infinite; padding-left: 100%; }
+        @keyframes scroll { from { transform: translateX(0); } to { transform: translateX(-100%); } }
+        
+        #guide-page-hero::before { 
+            content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+            background: radial-gradient(circle at top left, var(--primary-color)20, transparent 40%),
+                        radial-gradient(circle at bottom right, var(--secondary-color)20, transparent 40%);
+            opacity: 0.15; z-index: 0;
+        }
+
+        /* Geliştirilmiş Taktik Kart Stili */
+        .tactic-card {
+            background-color: var(--card-bg-color);
+            color: var(--text-color);
+            border-radius: 1.5rem;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.5);
+            border: 2px solid var(--primary-border-color);
+            transition: all 0.4s ease;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            position: relative; 
+            z-index: 10; 
+        }
+
+        .tactic-card:hover {
+            transform: translateY(-5px);
+            border-color: var(--primary-color);
+            box-shadow: 0 15px 50px var(--primary-shadow-color);
+        }
+        
+        .video-container {
+            position: relative;
+            padding-bottom: 56.25%; 
+            height: 0;
+            overflow: hidden;
+        }
+
+        .video-container iframe {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            border: 0;
+        }
+
+        .tactic-card ol {
+            list-style: decimal;
+            list-style-position: inside;
+            padding-left: 0.5rem;
+        }
+
+        /* Seçim Butonları Stilleri */
+        .select-button {
+            border: 2px solid var(--primary-color);
+            transition: all 0.2s ease, transform 0.1s ease;
+            position: relative;
+            overflow: hidden;
+            font-size: 0.95rem;
+            color: var(--text-color); /* Varsayılan metin rengi */
+        }
+
+        .select-button.active {
+            background-color: var(--primary-color);
+            color: #000;
+            box-shadow: 0 0 15px var(--primary-shadow-color);
+            transform: scale(1.05);
+        }
+        .select-button.active::before { /* Aktif butonda gradienti gizle */
+            background: none !important; 
+        }
+
+        .select-button::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(180deg, rgba(255, 255, 255, 0.05) 0%, rgba(0, 0, 0, 0.1) 100%);
+            z-index: 1;
+        }
+    </style>
+</head>
+<body id="body" class="bg-zinc-950 text-white dark:bg-black font-sans transition-colors duration-500 theme-dark">
+
+    <div class="fixed top-0 w-full z-[999]">
+        <div id="news-ticker" class="text-black py-1 overflow-hidden" style="background-color: var(--secondary-color);">
+            <div class="scroll-text text-sm font-bold tracking-widest uppercase">
+                &nbsp;🔥 V3.0 GÜNCELLEMESİ: TÜM AJAN FİLTRELERİ AKTİF! &nbsp;🎯 En Güncel 2025 Taktikleri Tek Sayfada. &nbsp;🧠 Profesyonel Oyuncuların Sırları. &nbsp;
+            </div>
+        </div>
+
+        <header id="main-header" class="w-full bg-zinc-950/90 backdrop-blur-md border-b shadow-2xl" style="border-color: var(--primary-color);">
+            <div class="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
+                <h1 class="text-3xl font-extrabold tracking-tight flex items-center gap-2">
+                    <a href="index.html" class="flex items-center gap-2 text-white">
+                        <span style="color: var(--primary-color);" class="text-4xl">⚔️</span> VALO-HUB
+                    </a>
+                </h1>
+                <nav class="hidden lg:block space-x-8">
+                    <a href="araclar.html" class="transition font-bold text-lg" style="color: var(--text-color); --hover-color: var(--primary-color);" onmouseover="this.style.color=this.style.getPropertyValue('--hover-color')" onmouseout="this.style.color='var(--text-color)'">🛠️ Araçlar</a>
+                    <a href="yol_haritasi.html" class="transition text-lg" style="color: var(--text-color); --hover-color: var(--primary-color);" onmouseover="this.style.color=this.style.getPropertyValue('--hover-color')" onmouseout="this.style.color='var(--text-color)'">Yol Haritası</a>
+                    <a href="rehberler.html" class="transition text-lg" style="color: var(--text-color); --hover-color: var(--primary-color);" onmouseover="this.style.color=this.style.getPropertyValue('--hover-color')" onmouseout="this.style.color='var(--text-color)'">📰 Rehberler</a>
+                    <a href="taktikler.html" class="transition text-lg font-bold" style="color: var(--primary-color); border-bottom: 3px solid var(--primary-color);">💣 Taktikler</a>
+                    <a href="hata_cozumleri.html" class="transition text-lg" style="color: var(--text-color); --hover-color: var(--primary-color);" onmouseover="this.style.color=this.style.getPropertyValue('--hover-color')" onmouseout="this.style.color='var(--text-color)'">🐛 Hata Çözümleri</a>
+                </nav>
+            </div>
+        </header>
+    </div>
+    
+    <button id="toggleBg" class="fixed top-28 right-6 z-[999] p-3 rounded-full shadow-2xl transition duration-300 border border-white/20" style="background-color: var(--card-bg-color); color: var(--text-color);">
+        <span id="bgIcon">🌑</span>
+    </button>
+
+    <main class="max-w-7xl mx-auto px-6 pt-32 pb-16">
+        
+        <header id="guide-page-hero" class="text-center rounded-3xl mb-12 shadow-2xl border-b-4 border-t-4" style="border-color: var(--secondary-color);">
+            <div class="relative z-10 p-8 pt-16 pb-16">
+                <h2 class="text-6xl font-extrabold mb-4 leading-tight tracking-tighter" style="color: var(--secondary-color);">
+                    🗺️ DİNAMİK LINEUP MERKEZİ
+                </h2>
+                <p class="text-xl text-gray-300 max-w-4xl mx-auto">
+                    Aşağıdan **Harita** ve **Ajan** seçerek sadece ihtiyacınız olan taktikleri anında görüntüleyin.
+                </p>
+            </div>
+        </header>
+
+        <h3 class="text-3xl font-bold mb-4" style="color: var(--primary-color);">1. Haritanızı Seçin:</h3>
+        <div id="map-selection" class="flex flex-wrap justify-center gap-4 mb-10 p-4 rounded-xl shadow-inner border border-primary-border-color" style="background-color: var(--card-bg-color);">
+            <button class="select-button map-button py-2 px-5 rounded-full font-semibold active" data-map="split" style="border-color: var(--primary-color); color: var(--text-color);">SPLIT ⚡</button>
+            <button class="select-button map-button py-2 px-5 rounded-full font-semibold" data-map="ascent" style="border-color: var(--primary-color); color: var(--text-color);">ASCENT ⛰️</button>
+            <button class="select-button map-button py-2 px-5 rounded-full font-semibold" data-map="bind" style="border-color: var(--primary-color); color: var(--text-color);">BIND 🌀</button>
+            <button class="select-button map-button py-2 px-5 rounded-full font-semibold" data-map="lotus" style="border-color: var(--primary-color); color: var(--text-color);">LOTUS 🌸</button>
+            <button class="select-button map-button py-2 px-5 rounded-full font-semibold" data-map="haven" style="border-color: var(--primary-color); color: var(--text-color);">HAVEN 🏠</button>
+            <button class="select-button map-button py-2 px-5 rounded-full font-semibold" data-map="sunset" style="border-color: var(--primary-color); color: var(--text-color);">SUNSET 🌅</button>
+            <button class="select-button map-button py-2 px-5 rounded-full font-semibold" data-map="abyss" style="border-color: var(--primary-color); color: var(--text-color);">ABYSS 🌊</button>
+            <button class="select-button map-button py-2 px-5 rounded-full font-semibold" data-map="icebox" style="border-color: var(--primary-color); color: var(--text-color);">ICEBOX 🧊</button>
+            <button class="select-button map-button py-2 px-5 rounded-full font-semibold" data-map="fracture" style="border-color: var(--primary-color); color: var(--text-color);">FRACTURE 💥</button>
+            <button class="select-button map-button py-2 px-5 rounded-full font-semibold" data-map="pearl" style="border-color: var(--primary-color); color: var(--text-color);">PEARL 🐚</button>
+        </div>
+
+        <h3 class="text-3xl font-bold mb-4" style="color: var(--primary-color);">2. Ajanınızı Filtreleyin:</h3>
+        <div id="agent-selection" class="flex flex-wrap justify-center gap-4 mb-16 p-4 rounded-xl shadow-inner border border-primary-border-color" style="background-color: var(--card-bg-color);">
+             </div>
+
+        <h3 id="lineup-title" class="text-4xl font-extrabold mb-10 border-l-4 pl-4" style="border-color: var(--secondary-color); color: var(--primary-color);">
+            📍 SPLIT | Tüm Ajan Taktikleri
+        </h3>
+
+        <div id="lineup-container" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            </div>
+        
+        <section class="mt-16 p-8 rounded-xl shadow-xl" style="background-color: var(--card-bg-color); border: 3px solid var(--secondary-color);">
+            <h3 class="text-3xl font-extrabold mb-4" style="color: var(--primary-color);">
+                🔥 Lineup Arşivi Nasıl Kullanılır?
+            </h3>
+            <p class="text-gray-400 mb-4">
+                Öncelikle yukarıdan bir harita seçin. Daha sonra, o haritada kullanmak istediğiniz ajanı seçerek sadece o ajana ait Lineup'ları görüntüleyebilirsiniz. Lineup'ı henüz eklenmemiş ajanları seçtiğinizde, içeriğin yakında ekleneceğine dair özel bir kart göreceksiniz.
+            </p>
+            <p class="font-bold text-lg" style="color: var(--secondary-color);">
+                Şu an **tüm** ajanların filtreleri ve temel haritaların Lineup'ları kullanıma hazırdır!
+            </p>
+        </section>
+
+    </main>
+    
+    <footer class="bg-black/80 border-t border-white/10 mt-20">
+        <div class="max-w-7xl mx-auto px-6 py-8 text-sm text-gray-500 flex flex-col md:flex-row items-center justify-between">
+            <div>© 2025 Mami’s VALO-HUB DATA CENTER — En Detaylı Valorant Kaynağı.</div>
+            <div>Kod ve Tasarım: <strong style="color: var(--primary-color);">Mami</strong></div>
+        </div>
+    </footer>
+    
+    <script>
+        
+        // --- 1. TÜM AJAN VE ROL BİLGİSİ ---
+        const allAgents = [
+            // Kontrolcüler
+            { agent: 'Viper', role: 'Controller', icon: 'fa-smog' },
+            { agent: 'Omen', role: 'Controller', icon: 'fa-mask' },
+            { agent: 'Brimstone', role: 'Controller', icon: 'fa-fire-extinguisher' },
+            { agent: 'Astra', role: 'Controller', icon: 'fa-meteor' },
+            { agent: 'Harbor', role: 'Controller', icon: 'fa-water' },
+            
+            // Düellocular
+            { agent: 'Jett', role: 'Duelist', icon: 'fa-wind' },
+            { agent: 'Raze', role: 'Duelist', icon: 'fa-bomb' },
+            { agent: 'Phoenix', role: 'Duelist', icon: 'fa-fire' },
+            { agent: 'Reyna', role: 'Duelist', icon: 'fa-ghost' },
+            { agent: 'Yoru', role: 'Duelist', icon: 'fa-portal' },
+            { agent: 'Neon', role: 'Duelist', icon: 'fa-bolt' },
+            { agent: 'Iso', role: 'Duelist', icon: 'fa-shield-halved' },
+
+            // Başlatıcılar (Initiator)
+            { agent: 'Sova', role: 'Initiator', icon: 'fa-bullseye' },
+            { agent: 'Breach', role: 'Initiator', icon: 'fa-earth-americas' },
+            { agent: 'Skye', role: 'Initiator', icon: 'fa-dove' },
+            { agent: 'KAY/O', role: 'Initiator', icon: 'fa-robot' },
+            { agent: 'Fade', role: 'Initiator', icon: 'fa-eye' },
+            { agent: 'Gekko', role: 'Initiator', icon: 'fa-bug' },
+            
+            // Gözcüler (Sentinel)
+            { agent: 'Sage', role: 'Sentinel', icon: 'fa-staff-snake' },
+            { agent: 'Cypher', role: 'Sentinel', icon: 'fa-camera' },
+            { agent: 'Killjoy', role: 'Sentinel', icon: 'fa-screwdriver-wrench' },
+            { agent: 'Chamber', role: 'Sentinel', icon: 'fa-gun' },
+            { agent: 'Deadlock', role: 'Sentinel', icon: 'fa-spider' },
+        ];
+
+        const agentColors = {
+            'Controller': '#42d63f', // Yeşil/Controller
+            'Sentinel': '#ef872e',   // Turuncu/Sentinel
+            'Initiator': '#386fcc',  // Mavi/Initiator
+            'Duelist': '#FF4655',    // Kırmızı/Duelist
+            'Rehber': '#5A5A5A',     // Gri/Rehber (Boş içerik için)
+        };
+
+        // --- 2. TÜM LINEUP VERİSİ (GENİŞLETİLMİŞ İÇERİK) ---
+        
+        const allLineups = {
+            
+            'split': [
+                { map: 'split', agent: 'Killjoy', role: 'Sentinel', site: 'B', title: 'B Ana Giriş Taret/Bot Defansı', videoId: '1tH-0Zg2w-E', desc: ['Alarm Botunu B Ana girişinin hemen arkasındaki duvara yerleştirin.', 'Taret\'i B Ana\'dan Heaven\'a çıkan rampaya bakacak şekilde kurun.']},
+                { map: 'split', agent: 'Cypher', role: 'Sentinel', site: 'A', title: 'A Heaven Teli ve Kamera Setubu', videoId: 'oM4R2Y7-r_0', desc: ['A Heaven merdivenlerinin tepesine bir Tel (Tripwire) kurun.', 'Kamerayı, A Main ve A Rampasını görecek şekilde yerleştirin.']},
+                { map: 'split', agent: 'Viper', role: 'Controller', site: 'B', title: 'B Site Post-Plant Molotofu (Güvenli Alan)', videoId: 'VvT1_g9dI0o', desc: ['B Spike dikildikten sonra, B Heaven/Ropes alanından Molotofu atın.', 'Molotof Spike\'ı tamamen kapsayacak ve sökülmeyi engelleyecektir.']},
+                { map: 'split', agent: 'Sova', role: 'Initiator', site: 'Mid', title: 'Mid Rampa Erken Keşif Oku', videoId: 'J_q0X0Zc_y0', desc: ['Saldıran Spawn\'dan (T-Spawn) Mid Rampa üzerine çift sekmeli bir ok fırlatın.', 'Ok, Mid Rampa ve Mid Grubu tamamen aydınlatır.']},
+                { map: 'split', agent: 'Jett', role: 'Duelist', site: 'Mid', title: 'Mid Rampa Hızlı Giriş Dash\'i', videoId: 'G3nQ3A1B6eE', desc: ['Mid Rampa\'ya bir Smoke atın.', 'Smoke\'un içinden geçerek hızlıca Mid Kontrol odasına veya Heaven\'a Dash atın.']},
+                { map: 'split', agent: 'Raze', role: 'Duelist', site: 'A', title: 'A Ana Hızlı Giriş Paketi', videoId: 'R7f5U1mE0bL', desc: ['A Ana\'ya hızlı giriş için çift Patlayıcı Paket (Blast Pack) kullanın.', 'A Site\'a Dash kadar hızlı bir giriş sağlar.']},
+                { map: 'split', agent: 'Brimstone', role: 'Controller', site: 'A', title: 'A Site Post-Plant Molotofu (Heaven Yanı)', videoId: 'B9P1M5sN1oL', desc: ['Spike A Site\'a dikildikten sonra A Ana girişinden Heaven köşesine Molotof atın.']},
+            ],
+            
+            'ascent': [
+                { map: 'ascent', agent: 'Viper', role: 'Controller', site: 'A', title: 'A Site Post-Plant Molotofu (Tree Köşesi)', videoId: '0E3sH9f8gS0', desc: ['A Tree\'de Spike dikildikten sonra, A Main (Ağaç) girişinden Molotofu atın.', 'Molotof Spike\'ı tamamen kapsayacak ve sökülmeyi 15 saniye engelleyecektir.']},
+                { map: 'ascent', agent: 'Omen', role: 'Controller', site: 'A', title: 'A Site Hızlı Giriş Blind (Kör Etme)', videoId: 'L9JzX5T1Q18', desc: ['A Main\'den A Site\'ın sağ tarafına bir Blind (Kör etme) atın.', 'Blind A Heaven ve A Genarator (Jeneratör) bölgesini tamamen kör eder.']},
+                { map: 'ascent', agent: 'Sova', role: 'Initiator', site: 'Mid', title: 'Mid Control Oku (Pizza/B Girişi Bilgisi)', videoId: 'G1O-V2k7E_o', desc: ['A Site Spawn\'dan, B Girişi üzerindeki çatıya tek sekmeli bir ok fırlatın.', 'Ok, Mid Market (Pizza) ve Mid Catwalk (Kedi Yolu) bölgesini aydınlatır.']},
+                { map: 'ascent', agent: 'Killjoy', role: 'Sentinel', site: 'B', title: 'B Site Hızlı Taret ve Bot Setup', videoId: 'mD4RzN8oB6A', desc: ['B Site arka duvarına Taret\'i, B Main\'i görecek şekilde kurun.', 'Alarm Botunu Taret\'in önüne, B Main girişine yakın yerleştirin.']},
+                { map: 'ascent', agent: 'KAY/O', role: 'Initiator', site: 'B', title: 'B Site Giriş Bastırma Bıçağı', videoId: 'k7f3U1mB5pY', desc: ['B Main\'den B Site\'a bir Bıçak (Suppress Blade) fırlatın.', 'Site üzerindeki tüm düşmanları susturarak girmeyi kolaylaştırır.']},
+                { map: 'ascent', agent: 'Jett', role: 'Duelist', site: 'Mid', title: 'Mid Kontrol Atılımı', videoId: 'N9y0Q2kF4uD', desc: ['Mid Karton kutularının yanından Smoke atın ve Mid Catwalk\'a Atılım (Dash) yapın.', 'Agresif ve erken Mid kontrolü için idealdir.']},
+            ],
+            
+            'bind': [
+                { map: 'bind', agent: 'Viper', role: 'Controller', site: 'B', title: 'B Site Post-Plant Molotofu (Teleport Girişi)', videoId: 'U_w4Pz8-VwA', desc: ['B Hookah (Teras) dışından B Site Spike noktasına Molotof atın.', 'Teleport (Işınlanma) odasından sökülmeyi engeller.']},
+                { map: 'bind', agent: 'Raze', role: 'Duelist', site: 'A', title: 'A Main Hızlı Giriş Paketi', videoId: 'dD8jQk2KjUo', desc: ['A Main\'den çift Patlayıcı Paket (Boombot) kullanarak A Site Bath\'a atlayın.', 'Hızlı giriş (entry) için mükemmeldir.']},
+                { map: 'bind', agent: 'Sova', role: 'Initiator', site: 'B', title: 'B Site Teras Keşif Oku', videoId: 'Q-x9K7wR0eI', desc: ['B Long\'dan sekmeli Ok kullanarak B Teras\'ı (Hookah) tamamen aydınlatın.', 'İçerideki tüm düşmanları gösterir.']},
+                { map: 'bind', agent: 'Omen', role: 'Controller', site: 'A', title: 'A Site Hızlı Smoke Atışı', videoId: 'tK3gH5yR0aX', desc: ['A Short ve A Heaven\'a aynı anda Smoke atarak hızlı siteye girin.', 'Omen için en hızlı A Site kontrol taktiğidir.']},
+                { map: 'bind', agent: 'Skye', role: 'Initiator', site: 'A', title: 'A Site Giriş Kuşu (Sekmeli)', videoId: 'kS1bH4xL3oA', desc: ['A Teleport girişinden sekmeli Kuş (Guiding Light) atarak A Site\'daki düşmanları kör edin.']},
+                { map: 'bind', agent: 'Cypher', role: 'Sentinel', site: 'A', title: 'A Site Drop Tel Setubu', videoId: 'lP7vN6jF4zY', desc: ['A Site içinde, Drop altından gelen saldırıları durdurmak için gizli Tel (Tripwire) kurun.']},
+            ],
+            
+            'lotus': [
+                { map: 'lotus', agent: 'Skye', role: 'Initiator', site: 'A', title: 'A Ana Giriş Kör Edici Kuş (Hızlı Push)', videoId: 'jA0vT4yU9pQ', desc: ['A Main\'in sol duvarından sekmeli Kuş (Guiding Light) atarak A Site\'ın tümünü kör edin.']},
+                { map: 'lotus', agent: 'Killjoy', role: 'Sentinel', site: 'C', title: 'C Site Ultimate Kapanı', videoId: 'k7gS9wE8jCg', desc: ['C Link\'ten gelen saldırıları engellemek için Killjoy Ultisini C Site\'ın ortasına atın.']},
+                { map: 'lotus', agent: 'Viper', role: 'Controller', site: 'B', title: 'B Site Tamamen Kapatan Perde', videoId: 'zQ9pM0uG4cE', desc: ['B Main\'den B Site\'ın ortasına Perde (Toxic Screen) çekerek siteyi ikiye bölün.']},
+            ],
+
+            'haven': [
+                { map: 'haven', agent: 'Breach', role: 'Initiator', site: 'C', title: 'C Long Hızlı Flash', videoId: 'jS0rP1tY9cW', desc: ['C Long duvarından içeri Flash (Flaş) atarak düşmanları kör edin.']},
+                { map: 'haven', agent: 'Sova', role: 'Initiator', site: 'A', title: 'A Long Erken Keşif Oku', videoId: 'kP2lV0tG2fR', desc: ['T-Spawn\'dan A Long\'a doğru çift sekme Ok atın.']},
+                { map: 'haven', agent: 'Jett', role: 'Duelist', site: 'Mid', title: 'Mid Kontrol Dash\'i', videoId: 'G1nQ3A1B6eF', desc: ['Mid Window\'a (Pencere) Smoke atıp hızla içeri Dash atarak erken frag yakalayın.']},
+            ],
+
+            'sunset': [
+                { map: 'sunset', agent: 'Viper', role: 'Controller', site: 'A', title: 'A Site Hızlı Giriş Perdesi', videoId: 'n1Q0Y2lE0cI', desc: ['A Main\'den A Site\'ın tümünü kapsayan bir Perde (Toxic Screen) çekin.']},
+                { map: 'sunset', agent: 'Sova', role: 'Initiator', site: 'Mid', title: 'Mid Kontrol Oku (Pazar Yerine)', videoId: 'B9P1M5sN1dL', desc: ['Mid Mall (Pazar Yeri) üzerine çift sekmeli Ok atın.']},
+                { map: 'sunset', agent: 'Killjoy', role: 'Sentinel', site: 'B', title: 'B Site Taret ve Bot Setubu', videoId: 'mR3vE4yP5aQ', desc: ['Taret\'i B Main girişini görecek şekilde yüksek bir noktaya yerleştirin.', 'Alarm Botu\'nu Taretin önüne koyarak B Main push\'larını yavaşlatın.']},
+            ],
+            
+            'abyss': [
+                { map: 'abyss', agent: 'Omen', role: 'Controller', site: 'B', title: 'B Site Savunma Smoke\'u (Uzun Mesafe)', videoId: 'oM4T2Y7cR0o', desc: ['Savunma Spawn\'dan B Site üstündeki boşluğa Smoke atın.', 'Düşmanların B Site\'a girişini tamamen engeller.']},
+                { map: 'abyss', agent: 'Raze', role: 'Duelist', site: 'Mid', title: 'Mid Boşluğa Patlayıcı Paket Rush', videoId: 'D8jQk2KjUoF', desc: ['Mid kontrolünü sağlamak için hızlıca boşluğa doğru Patlayıcı Paket (Blast Pack) ile atlayın.']},
+                { map: 'abyss', agent: 'Sova', role: 'Initiator', site: 'A', title: 'A Site Keşif Oku (Alt Geçit)', videoId: 'kP2lV0tG2fX', desc: ['A Site alt geçit girişine sekmeli Ok atarak bölgeyi aydınlatın.']},
+            ],
+
+            'icebox': [
+                { map: 'icebox', agent: 'Sova', role: 'Initiator', site: 'B', title: 'B Ana Hızlı Keşif Oku', videoId: 'tU9h7Yg6n0o', desc: ['B Ana girişindeki Rampadan B Site\'ın ortasına tek sekmeli Ok atın.']},
+                { map: 'icebox', agent: 'Viper', role: 'Controller', site: 'A', title: 'A Site Post-Plant (Belt/Kemer Defans)', videoId: 'oM4R2Y7d-wE', desc: ['A Site dikildikten sonra, A Rampa altından Spike\'a Molotof (Snake Bite) atın.']},
+                { map: 'icebox', agent: 'Sage', role: 'Sentinel', site: 'Mid', title: 'Mid Kontrol Duvarı (Erken Duvar)', videoId: 'Z1x4C2zV6tY', desc: ['Round başlar başlamaz Mid Boiler (Kazan) girişini kapatan bir Duvar (Barrier Orb) kurun.']},
+            ],
+            'fracture': [
+                { map: 'fracture', agent: 'Breach', role: 'Initiator', site: 'A', title: 'A Site Duvar Ardı Flash', videoId: 'jA0vT4yU9xL', desc: ['A Saldırı Spawn\'dan, A Dalgıç (A Drop) alanına kör edici Flash (Fault Line) kullanın.']},
+                { map: 'fracture', agent: 'Killjoy', role: 'Sentinel', site: 'B', title: 'B Jeneratör Taret Setubu', videoId: 'k7gS9wE8jCo', desc: ['B Tünel\'den gelen push\'ları tespit etmek için Taret\'i B Jeneratör (Jeneratör) üzerine kurun.']},
+                { map: 'fracture', agent: 'Neon', role: 'Duelist', site: 'A', title: 'A Site Hızlı Giriş Kayması', videoId: 'zQ9pM0uG4cB', desc: ['A Main\'den koşu Duvarı (Fast Lane) ile görüşü kapatarak A Site\'a doğru hızlıca Kayma (Relay Bolt) yapın.']},
+            ],
+            'pearl': [
+                { map: 'pearl', agent: 'Fade', role: 'Initiator', site: 'B', title: 'B Rampası Haunt Oku', videoId: 'jS0rP1tY9cX', desc: ['T-Spawn\'dan B Rampası üzerine Haunt (Gözcü) atın.']},
+                { map: 'pearl', agent: 'Viper', role: 'Controller', site: 'Mid', title: 'Mid Kontrol Perdesi', videoId: 'kP2lV0tG2fV', desc: ['Mid Connector (Bağlantı) girişini ve Mid Doors (Kapılar) bölgesini kapsayan uzun bir Perde (Toxic Screen) çekin.']},
+                { map: 'pearl', agent: 'Astra', role: 'Controller', site: 'A', title: 'A Site Çekim ve Nova Setubu', videoId: 'G1nQ3A1B6eG', desc: ['A Site üzerinde Yıldızları (Stars) kullanarak Çekim Alanı (Gravity Well) ve Nova Vuruşu (Nova Pulse) kombinasyonu yapın.']},
+            ],
+        };
+
+        // --- 3. JAVASCRIPT: KART OLUŞTURMA VE FİLTRELEME ---
+        
+        let activeMap = 'split'; 
+        let activeAgent = 'all'; 
+
+        function getAgentRole(agentName) {
+            const agentInfo = allAgents.find(a => a.agent === agentName);
+            return agentInfo ? agentInfo.role : 'Rehber';
+        }
+
+        function getAgentColor(agentName) {
+            const role = getAgentRole(agentName);
+            return agentColors[role] || '#4ADE80';
+        }
+
+        function getAgentIcon(agentName) {
+            const agentInfo = allAgents.find(a => a.agent === agentName);
+            return agentInfo ? agentInfo.icon : 'fa-info-circle';
+        }
+
+        function createPlaceholderCard(agentName) {
+            const role = getAgentRole(agentName);
+            const color = agentColors[role];
+            const icon = getAgentIcon(agentName);
+
+            return `
+                <div class="tactic-card col-span-full p-10 text-center rounded-xl shadow-2xl" style="background-color: var(--card-bg-color); border: 3px solid ${color};">
+                    <i class="fa-solid ${icon} text-6xl mb-4" style="color: ${color};"></i>
+                    <h4 class="text-3xl font-extrabold mb-2" style="color: ${color};">${agentName} Lineup\'ları Yolda!</h4>
+                    <p class="text-gray-300 text-lg">Seçtiğiniz ${activeMap.toUpperCase()} haritası için ${agentName} Lineup\'ları şu an hazırlanıyor. Takipte kalın!</p>
+                </div>
+            `;
+        }
+
+        function createCard(lineup) {
+            const cardBgColor = agentColors[lineup.role] || '#4ADE80';
+            
+            let olList = lineup.desc.map((item, index) => `<li style="color: var(--text-muted-color);">${item}</li>`).join('');
+            
+            let videoHtml = '';
+            let videoBorder = `border-bottom: 3px solid ${cardBgColor};`;
+            
+            if (lineup.videoId) {
+                videoHtml = `
+                    <iframe 
+                        src="https://www.youtube.com/embed/${lineup.videoId}?autoplay=0&rel=0&modestbranding=1" 
+                        title="${lineup.title}" 
+                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
+                        referrerpolicy="strict-origin-when-cross-origin" 
+                        allowfullscreen>
+                    </iframe>
+                `;
+            } else {
+                 // Video ID'si boşsa (Bu kart aslında kullanılmayacak, yerini createPlaceholderCard alacak)
+                 videoBorder = `border-bottom: 3px dashed var(--secondary-color);`;
+                 videoHtml = `
+                    <div class="video-container flex items-center justify-center bg-zinc-800" style="background-color: var(--card-bg-color); color: var(--secondary-color);">
+                        <div class="placeholder-content p-4 text-center">
+                            <i class="fa-solid fa-code-branch text-4xl mb-2"></i>
+                            <p class="text-lg font-bold">Bu Harita/Ajan İçeriği Yakında Eklenecektir.</p>
+                        </div>
+                    </div>
+                `;
+            }
+
+            return `
+                <div class="tactic-card data-agent="${lineup.agent}" style="border-color: ${cardBgColor}30;">
+                    <div class="video-container" style="${videoBorder}">
+                        ${videoHtml}
+                    </div>
+                    <div class="p-6">
+                        <span class="text-sm font-semibold px-3 py-1 rounded-full text-black mb-3 inline-block tracking-wider shadow-md" style="background-color: ${cardBgColor};">
+                            ${lineup.agent} (${lineup.role})
+                        </span>
+                        <h4 class="text-xl font-bold mb-2 border-b border-gray-700 pb-2">${lineup.title}</h4>
+                        <p class="text-sm" style="color: var(--text-muted-color); margin-bottom: 1rem;">Site: ${lineup.site || 'Genel'}</p>
+                        
+                        <ol class="text-sm">
+                            ${olList}
+                        </ol>
+                    </div>
+                </div>
+            `;
+        }
+
+        function renderAgentButtons() {
+            const agentContainer = document.getElementById('agent-selection');
+            agentContainer.innerHTML = '';
+            
+            // Tüm Ajanlar butonu
+            agentContainer.innerHTML += `
+                <button class="select-button agent-button py-2 px-5 rounded-full font-semibold ${activeAgent === 'all' ? 'active' : ''}" data-agent="all" style="border-color: var(--primary-color); color: var(--text-color);">
+                    <i class="fa-solid fa-star"></i> Tüm Ajanlar
+                </button>
+            `;
+
+            // Tüm ajan butonlarını role göre gruplayıp ekle
+            allAgents.forEach(agentInfo => {
+                const color = getAgentColor(agentInfo.agent);
+                agentContainer.innerHTML += `
+                    <button class="select-button agent-button py-2 px-5 rounded-full font-semibold ${activeAgent === agentInfo.agent ? 'active' : ''}" data-agent="${agentInfo.agent}" data-role="${agentInfo.role}" style="border-color: ${color}; color: var(--text-color);">
+                        <i class="fa-solid ${agentInfo.icon}"></i> ${agentInfo.agent}
+                    </button>
+                `;
+            });
+
+            // Ajan butonlarına event listener ekleme
+            document.querySelectorAll('.agent-button').forEach(button => {
+                button.addEventListener('click', (e) => {
+                    // Tıklanan öğenin bir ikon (i) veya yazı (span) olması ihtimaline karşı dataset'i e.currentTarget'tan al
+                    activeAgent = e.currentTarget.dataset.agent;
+                    document.querySelectorAll('.agent-button').forEach(btn => btn.classList.remove('active'));
+                    e.currentTarget.classList.add('active');
+                    updateButtonStyles();
+                    renderLineups(); 
+                });
+            });
+        }
+
+        function renderLineups() {
+            const container = document.getElementById('lineup-container');
+            const title = document.getElementById('lineup-title');
+            container.innerHTML = ''; 
+            
+            const mapName = activeMap.toUpperCase();
+            
+            // Başlık Güncelleme
+            title.innerHTML = `📍 ${mapName} | ${activeAgent === 'all' ? 'Tüm Ajan Taktikleri' : activeAgent + ' Lineup\'ları'}`;
+
+            // Lineup'ları filtreleme
+            let allMapLineups = allLineups[activeMap] || [];
+            
+            if (activeAgent === 'all') {
+                // 'Tüm Ajanlar' seçiliyken, sadece Lineup'ı olanları göster (boş kartları gösterme)
+                let filteredLineups = allMapLineups.filter(lineup => lineup.videoId !== null);
+                
+                if (filteredLineups.length === 0) {
+                     // Haritada hiç Lineup yoksa genel uyarı ver
+                     container.innerHTML = createPlaceholderCard('Rehber');
+                } else {
+                    filteredLineups.forEach(lineup => {
+                        container.innerHTML += createCard(lineup);
+                    });
+                }
+            } else {
+                // Belirli bir ajan seçiliyken
+                const agentLineups = allMapLineups.filter(lineup => lineup.agent === activeAgent);
+
+                if (agentLineups.length > 0) {
+                    // Lineup varsa, kartları göster
+                    agentLineups.forEach(lineup => {
+                        container.innerHTML += createCard(lineup);
+                    });
+                } else {
+                    // Lineup yoksa, ajan adıyla placeholder kartı göster
+                    container.innerHTML = createPlaceholderCard(activeAgent);
+                }
+            }
+        }
+
+
+        // --- 4. TEMA VE İLK YÜKLEME JS'İ ---
+
+        const themes = ['dark', 'light', 'gaming'];
+        const themeIcons = { 'dark': '🌑', 'light': '☀️', 'gaming': '👾' };
+        
+        const themeVariables = {
+            'dark': {
+                '--primary-color': '#4ADE80', 
+                '--secondary-color': '#F97316', 
+                '--primary-border-color': '#4ade8030',
+                '--primary-shadow-color': 'rgba(74, 222, 128, 0.5)',
+                '--card-bg-color': '#18181b', 
+                '--article-bg-color': '#0a0a0a', 
+                '--text-color': '#ffffff',
+                '--text-muted-color': '#ccc',
+                'bg-class': 'bg-zinc-950',
+                'text-class': 'text-white'
+            },
+            'light': {
+                '--primary-color': '#3B82F6', 
+                '--secondary-color': '#DC2626', 
+                '--primary-border-color': '#3B82F630',
+                '--primary-shadow-color': 'rgba(59, 130, 246, 0.5)',
+                '--card-bg-color': '#F3F4F6', 
+                '--article-bg-color': '#FFFFFF', 
+                '--text-color': '#1f2937',
+                '--text-muted-color': '#6b7280',
+                'bg-class': 'bg-gray-50',
+                'text-class': 'text-gray-900'
+            },
+            'gaming': {
+                '--primary-color': '#F472B6', 
+                '--secondary-color': '#A855F7', 
+                '--primary-border-color': '#F472B630',
+                '--primary-shadow-color': 'rgba(244, 114, 182, 0.5)',
+                '--card-bg-color': '#0f0b15', 
+                '--article-bg-color': '#06040a', 
+                '--text-color': '#ffffff',
+                '--text-muted-color': '#b3b3b3',
+                'bg-class': 'bg-black',
+                'text-class': 'text-white'
+            }
+        };
+
+        function applyTheme(themeName) {
+            const themeData = themeVariables[themeName];
+            const body = document.getElementById('body');
+            const bgIcon = document.getElementById('bgIcon');
+            const root = document.documentElement;
+
+            body.classList.remove(...body.classList);
+            body.classList.add(`theme-${themeName}`, themeData['bg-class'], themeData['text-class'], 'font-sans', 'transition-colors', 'duration-500');
+
+            for (const [key, value] of Object.entries(themeData)) {
+                if (key.startsWith('--')) {
+                    root.style.setProperty(key, value);
+                }
+            }
+
+            document.getElementById('main-header').style.backgroundColor = themeName === 'light' ? 'rgba(255, 255, 255, 0.9)' : 'rgba(10, 10, 10, 0.9)';
+            document.getElementById('main-header').style.borderColor = themeData['--primary-color'];
+            
+            bgIcon.textContent = themeIcons[themeName]; 
+            localStorage.setItem('theme', themeName);
+
+            updateButtonStyles();
+        }
+
+        function updateButtonStyles() {
+            const textColor = document.documentElement.style.getPropertyValue('--text-color');
+            const primaryColor = document.documentElement.style.getPropertyValue('--primary-color');
+            
+            document.querySelectorAll('.map-button').forEach(btn => {
+                btn.style.color = textColor;
+                btn.style.borderColor = primaryColor;
+            });
+            
+            document.querySelectorAll('.agent-button').forEach(btn => {
+                const agent = btn.dataset.agent;
+                const color = agent === 'all' ? primaryColor : getAgentColor(agent);
+                btn.style.color = textColor;
+                btn.style.borderColor = color;
+            });
+
+            document.querySelectorAll('.select-button.active').forEach(btn => {
+                const agent = btn.dataset.agent;
+                const color = agent === 'all' ? primaryColor : getAgentColor(agent);
+                 // Aktif butonların rengi her zaman siyah olur (en iyi kontrast)
+                btn.style.color = '#000'; 
+                btn.style.backgroundColor = color;
+            });
+        }
+
+
+        function toggleNextTheme() {
+            const currentTheme = localStorage.getItem('theme') || 'dark';
+            const currentIndex = themes.indexOf(currentTheme);
+            const nextIndex = (currentIndex + 1) % themes.length;
+            const nextTheme = themes[nextIndex];
+            applyTheme(nextTheme);
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            
+            const savedTheme = localStorage.getItem('theme');
+            applyTheme(savedTheme || 'dark'); 
+            
+            document.getElementById('toggleBg').addEventListener('click', toggleNextTheme);
+            
+            document.querySelectorAll('.map-button').forEach(button => {
+                button.addEventListener('click', (e) => {
+                    activeMap = e.target.dataset.map;
+                    activeAgent = 'all'; 
+                    
+                    document.querySelectorAll('.map-button').forEach(btn => btn.classList.remove('active'));
+                    e.target.classList.add('active');
+                    
+                    renderAgentButtons();
+                    renderLineups(); 
+                    updateButtonStyles(); 
+                });
+            });
+
+            // İlk yüklemede çalıştır
+            renderAgentButtons();
+            renderLineups();
+            updateButtonStyles(); 
+        });
+    </script>
+</body>
+</html>

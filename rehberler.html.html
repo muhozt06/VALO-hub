@@ -1,0 +1,329 @@
+﻿<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>VALO-HUB | Tüm Detaylı Rehberler ve Analizler</title>
+    <meta name="description" content="Valorant için en güncel meta analizleri, teknik rehberler, FPS optimizasyonu ve ekonomi stratejileri burada." />
+    
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;800;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+    
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Poppins', 'sans-serif'],
+                    },
+                    colors: {
+                        'primary-dark': '#4ADE80', 
+                        'secondary-dark': '#F97316', 
+                    }
+                }
+            }
+        }
+    </script>
+    
+    <style>
+        /* Temel CSS Değişkenleri (JavaScript ile üzerine yazılır) */
+        :root {
+            --primary-color: #4ADE80;
+            --secondary-color: #F97316;
+            --primary-border-color: #4ade8030;
+            --primary-shadow-color: rgba(74, 222, 128, 0.5);
+            --primary-shadow-color-light: rgba(74, 222, 128, 0.15);
+            --card-bg-color: #18181b;
+            --main-bg-color: #0a0a0a;
+        }
+
+        /* Arka Plan Efekti */
+        body {
+            background-color: var(--main-bg-color);
+            position: relative;
+        }
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle at 10% 10%, var(--primary-color)10, transparent 20%),
+                        radial-gradient(circle at 90% 90%, var(--secondary-color)10, transparent 20%);
+            opacity: 0.05;
+            z-index: -1;
+            transition: background 0.5s ease;
+        }
+
+        /* Haber Bandı Kaydırma Animasyonu */
+        .scroll-text { white-space: nowrap; animation: scroll 45s linear infinite; padding-left: 100%; }
+        @keyframes scroll { from { transform: translateX(0); } to { transform: translateX(-100%); } }
+
+        /* Rehber Kart Stili */
+        .guide-card {
+            background-color: var(--card-bg-color);
+            padding: 2rem;
+            border-radius: 1.5rem;
+            border: 2px solid var(--primary-border-color);
+            box-shadow: 0 5px 30px var(--primary-shadow-color-light);
+            transition: all 0.3s ease, border-color 0.5s;
+            transform: scale(1);
+            opacity: 1;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .guide-card:hover {
+            transform: scale(1.02);
+            box-shadow: 0 10px 40px var(--primary-shadow-color);
+            border-color: var(--primary-color); /* Hover'da daha belirgin hale getir */
+        }
+        
+        /* Filtreleme Gizleme/Gösterme Animasyonu */
+        .guide-card.hidden {
+            display: none;
+            opacity: 0;
+            transform: scale(0.95);
+        }
+    </style>
+</head>
+<body id="body" class="bg-zinc-950 text-white dark:bg-black font-sans transition-colors duration-500 theme-dark">
+
+    <div class="fixed top-0 w-full z-50">
+        <div id="news-ticker" class="text-black py-1 overflow-hidden" style="background-color: var(--secondary-color);">
+            <div class="scroll-text text-sm font-bold tracking-widest uppercase">
+                &nbsp;🚨 YENİ! Detaylı Ekonomi Rehberi Yayımlandı! &nbsp;🔥 VCT Meta Analizi Güncel Ajan Kompozisyonları &nbsp;🎯 FPS Optimizasyonu ile %30 Performans Artışı Garantili! &nbsp;💰 Ekonomi Rehberi ile Kazanma Serisi Başlat! &nbsp;
+            </div>
+        </div>
+
+        <header id="main-header" class="w-full bg-zinc-950/90 backdrop-blur-sm border-b shadow-xl" style="border-color: var(--primary-color);">
+            <div class="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
+                <h1 class="text-3xl font-extrabold tracking-tight flex items-center gap-2" style="color: var(--primary-color);">
+                    <a href="index.html" class="flex items-center gap-2 text-white">
+                        <span style="color: var(--primary-color);" class="text-4xl">⚔️</span> VALO-HUB
+                    </a>
+                </h1>
+                <nav class="hidden lg:block space-x-8">
+                    <a href="index.html" class="hover:text-white transition font-bold" style="color: var(--primary-color);">Ana Sayfa</a>
+                    <a href="araclar.html" class="hover:text-white transition font-bold" style="color: var(--primary-color);">Araçlar</a>
+                    <a href="taktikler.html" class="hover:text-white transition font-bold" style="color: var(--primary-color);">Taktikler</a>
+                </nav>
+            </div>
+        </header>
+    </div>
+    
+    <button id="toggleBg" class="fixed top-28 right-6 z-50 bg-zinc-700 hover:bg-zinc-600 text-white p-3 rounded-full shadow-2xl transition duration-300 border border-white/20">
+        <span id="bgIcon">🌑</span>
+    </button>
+
+
+    <main class="max-w-7xl mx-auto px-6 pt-40 pb-16">
+        
+        <div class="text-center mb-12">
+            <h2 class="text-5xl font-extrabold tracking-tighter" style="color: var(--primary-color);">
+                TÜM VALORANT REHBERLERİ
+            </h2>
+            <p class="text-lg text-gray-400 mt-2">
+                Meta değişiklikleri, teknik optimizasyon ve mentalite üzerine uzman analizleri.
+            </p>
+        </div>
+
+        <div class="flex flex-wrap justify-center gap-3 mb-12">
+            <button class="filter-btn px-6 py-2 rounded-full font-bold transition duration-300" data-filter="all" style="background-color: var(--primary-color); color: black;">Tümü</button>
+            <button class="filter-btn px-6 py-2 rounded-full font-bold transition duration-300" data-filter="meta" style="border: 2px solid var(--primary-color); color: var(--primary-color);">Meta & Yama</button>
+            <button class="filter-btn px-6 py-2 rounded-full font-bold transition duration-300" data-filter="ekonomi" style="border: 2px solid var(--primary-color); color: var(--primary-color);">Ekonomi & İpuçları</button>
+            <button class="filter-btn px-6 py-2 rounded-full font-bold transition duration-300" data-filter="teknik" style="border: 2px solid var(--primary-color); color: var(--primary-color);">Teknik & FPS</button>
+        </div>
+
+        <div id="guide-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+
+            <article class="guide-card ekonomi" data-category="ekonomi" style="border-color: var(--secondary-color);">
+                <div class="flex items-center justify-between mb-3">
+                    <span class="text-sm font-semibold px-3 py-1 rounded-full text-black" style="background-color: var(--secondary-color);">EKONOMİ</span>
+                    <i class="fa-solid fa-money-bill-transfer text-3xl" style="color: var(--secondary-color);"></i>
+                </div>
+                <h3 class="text-2xl font-extrabold mb-3">3. Round Kabusu: Ekonomi Yönetimi</h3>
+                <p class="text-gray-400 mb-4 flex-grow">
+                    Pistol Round sonrası doğru satın alma stratejileri. Ne zaman ECO, ne zaman FORCE-BUY? Detaylı tablo ve açıklamalarla.
+                </p>
+                <a href="ekonomi_rehberi.html" class="mt-4 inline-block font-bold hover:underline text-sm" style="color: var(--primary-color);">Ekonomi Tablosunu Gör →</a>
+            </article>
+
+            <article class="guide-card meta" data-category="meta" style="border-color: var(--primary-color);">
+                <div class="flex items-center justify-between mb-3">
+                    <span class="text-sm font-semibold px-3 py-1 rounded-full text-black" style="background-color: var(--primary-color);">META</span>
+                    <i class="fa-solid fa-microchip text-3xl" style="color: var(--primary-color);"></i>
+                </div>
+                <h3 class="text-2xl font-extrabold mb-3">Güncel Yama Notları ve Jett Analizi</h3>
+                <p class="text-gray-400 mb-4 flex-grow">
+                    Son yama 9.0'ın Jett nerf'ü sonrası Duelist rolündeki değişimler ve yeni meta ajan kompozisyonları.
+                </p>
+                <a href="meta_analizi.html" class="mt-4 inline-block font-bold hover:underline text-sm" style="color: var(--primary-color);">Detaylı Analizi Oku →</a>
+            </article>
+
+            <article class="guide-card teknik" data-category="teknik" style="border-color: var(--secondary-color);">
+                <div class="flex items-center justify-between mb-3">
+                    <span class="text-sm font-semibold px-3 py-1 rounded-full text-black" style="background-color: var(--secondary-color);">TEKNİK</span>
+                    <i class="fa-solid fa-gears text-3xl" style="color: var(--secondary-color);"></i>
+                </div>
+                <h3 class="text-2xl font-extrabold mb-3">Düşük Sistemler İçin FPS Optimizasyonu</h3>
+                <p class="text-gray-400 mb-4 flex-grow">
+                    Ayarlar, PC ve GPU optimizasyonları ile FPS'inizi %30'a kadar artırın. Gizli Windows ayarları dahil.
+                </p>
+                <a href="fps_rehberi.html" class="mt-4 inline-block font-bold hover:underline text-sm" style="color: var(--primary-color);">Tüm Ayarları Gör →</a>
+            </article>
+
+            <article class="guide-card ekonomi" data-category="ekonomi" style="border-color: var(--primary-color);">
+                <div class="flex items-center justify-between mb-3">
+                    <span class="text-sm font-semibold px-3 py-1 rounded-full text-black" style="background-color: var(--primary-color);">İPUCU</span>
+                    <i class="fa-solid fa-brain text-3xl" style="color: var(--primary-color);"></i>
+                </div>
+                <h3 class="text-2xl font-extrabold mb-3">Radiant Mentalitesi ve Tilt Yönetimi</h3>
+                <p class="text-gray-400 mb-4 flex-grow">
+                    Ranked'da istikrarı korumanın yolları. Takım iletişimi, motivasyon ve zor durumlarda kazanma stratejileri.
+                </p>
+                <a href="dosyalar/mentalite_kilavuzu.zip" download class="mt-4 inline-block font-bold hover:underline text-sm" style="color: var(--primary-color);">Kılavuzu İndir →</a>
+            </article>
+            
+            <article class="guide-card meta" data-category="meta" style="border-color: var(--secondary-color);">
+                <div class="flex items-center justify-between mb-3">
+                    <span class="text-sm font-semibold px-3 py-1 rounded-full text-black" style="background-color: var(--secondary-color);">META</span>
+                    <i class="fa-solid fa-map-location-dot text-3xl" style="color: var(--secondary-color);"></i>
+                </div>
+                <h3 class="text-2xl font-extrabold mb-3">Güncel Harita Ajan Kompozisyonları</h3>
+                <p class="text-gray-400 mb-4 flex-grow">
+                    Lotus, Split ve Icebox'ta en yüksek kazanma oranına sahip ajan kombinasyonları ve stratejik yaklaşımlar.
+                </p>
+                <a href="harita_meta.html" class="mt-4 inline-block font-bold hover:underline text-sm" style="color: var(--primary-color);">Harita Analizlerini Gör →</a>
+            </article>
+            
+            <article class="guide-card teknik" data-category="teknik" style="border-color: var(--primary-color);">
+                <div class="flex items-center justify-between mb-3">
+                    <span class="text-sm font-semibold px-3 py-1 rounded-full text-black" style="background-color: var(--primary-color);">TEKNİK</span>
+                    <i class="fa-solid fa-crosshairs text-3xl" style="color: var(--primary-color);"></i>
+                </div>
+                <h3 class="text-2xl font-extrabold mb-3">Profesyonel Oyuncu Sensivity Ayarları</h3>
+                <p class="text-gray-400 mb-4 flex-grow">
+                    Dünyanın en iyi oyuncularının kullandığı DPI, eDPI, Scope ve Crosshair ayarlarının detaylı tablosu.
+                </p>
+                <a href="ayarlar_rehberi.html" class="mt-4 inline-block font-bold hover:underline text-sm" style="color: var(--primary-color);">Tüm Ayarları Karşılaştır →</a>
+            </article>
+
+
+        </div>
+
+    </main>
+    
+    <footer class="bg-black/80 border-t border-white/10 mt-20">
+        <div class="max-w-7xl mx-auto px-6 py-8 text-sm text-gray-500 flex flex-col md:flex-row items-center justify-between">
+            <div>© 2025 Mami’s VALO-HUB DATA CENTER — En Detaylı Valorant Kaynağı.</div>
+            <div>Kod ve Tasarım: <strong style="color: var(--primary-color);">Mami</strong></div>
+        </div>
+    </footer>
+    
+    <script>
+        // Tema Değişkenleri ve Fonksiyonları
+        const themes = ['dark', 'light', 'gaming'];
+        const themeIcons = { 'dark': '🌑', 'light': '☀️', 'gaming': '👾' };
+        const themeVariables = {
+            'dark': { '--primary-color': '#4ADE80', '--secondary-color': '#F97316', '--primary-border-color': '#4ade8030', '--primary-shadow-color': 'rgba(74, 222, 128, 0.5)', '--primary-shadow-color-light': 'rgba(74, 222, 128, 0.15)', '--card-bg-color': '#18181b', '--main-bg-color': '#0a0a0a', 'bg-class': 'bg-zinc-950', 'text-class': 'text-white', 'header-bg': 'rgba(10, 10, 10, 0.9)'},
+            'light': { '--primary-color': '#3B82F6', '--secondary-color': '#DC2626', '--primary-border-color': '#3B82F630', '--primary-shadow-color': 'rgba(59, 130, 246, 0.5)', '--primary-shadow-color-light': 'rgba(59, 130, 246, 0.15)', '--card-bg-color': '#F3F4F6', '--main-bg-color': '#FFFFFF', 'bg-class': 'bg-gray-50', 'text-class': 'text-gray-900', 'header-bg': 'rgba(255, 255, 255, 0.9)'},
+            'gaming': { '--primary-color': '#F472B6', '--secondary-color': '#A855F7', '--primary-border-color': '#F472B630', '--primary-shadow-color': 'rgba(244, 114, 182, 0.5)', '--primary-shadow-color-light': 'rgba(244, 114, 182, 0.15)', '--card-bg-color': '#0f0b15', '--main-bg-color': '#06040a', 'bg-class': 'bg-black', 'text-class': 'text-white', 'header-bg': 'rgba(6, 4, 10, 0.9)'}
+        };
+
+        document.addEventListener('DOMContentLoaded', () => {
+            const body = document.getElementById('body');
+            const toggleBtn = document.getElementById('toggleBg');
+            const bgIcon = document.getElementById('bgIcon');
+            const root = document.documentElement;
+
+            function applyTheme(themeName) {
+                const themeData = themeVariables[themeName];
+                body.classList.remove(...Object.values(themeVariables).map(t => t['bg-class']), ...Object.values(themeVariables).map(t => t['text-class']), 'theme-dark', 'theme-light', 'theme-gaming');
+                body.classList.add(`theme-${themeName}`, themeData['bg-class'], themeData['text-class']);
+
+                for (const [key, value] of Object.entries(themeData)) {
+                    if (key.startsWith('--')) {
+                        root.style.setProperty(key, value);
+                    }
+                }
+
+                // Dinamik Arka Planı Güncelle
+                document.body.style.setProperty('--main-bg-color', themeData['--main-bg-color']);
+                document.body.style.setProperty('--primary-color', themeData['--primary-color']);
+                document.body.style.setProperty('--secondary-color', themeData['--secondary-color']);
+
+
+                document.getElementById('news-ticker').style.backgroundColor = themeData['--secondary-color'];
+                document.getElementById('main-header').style.backgroundColor = themeData['header-bg'];
+                document.getElementById('main-header').style.borderColor = themeData['--primary-color'];
+                bgIcon.textContent = themeIcons[themeName]; 
+                localStorage.setItem('theme', themeName);
+                
+                // Tema değişince filtre butonlarını güncelle
+                document.querySelectorAll('.filter-btn').forEach(btn => {
+                    const isActive = btn.classList.contains('active-filter');
+                    
+                    btn.style.borderColor = themeData['--primary-color'];
+                    btn.style.color = isActive ? 'black' : themeData['--primary-color'];
+                    btn.style.backgroundColor = isActive ? themeData['--primary-color'] : 'transparent';
+                });
+            }
+
+            function toggleNextTheme() {
+                const currentTheme = localStorage.getItem('theme') || 'dark';
+                const currentIndex = themes.indexOf(currentTheme);
+                const nextIndex = (currentIndex + 1) % themes.length;
+                const nextTheme = themes[nextIndex];
+                applyTheme(nextTheme);
+            }
+
+            const savedTheme = localStorage.getItem('theme');
+            applyTheme(savedTheme || 'dark'); 
+
+            if (toggleBtn) {
+                toggleBtn.addEventListener('click', toggleNextTheme);
+            }
+            
+            // FİLTRELEME FONKSİYONU
+            const filterButtons = document.querySelectorAll('.filter-btn');
+            const guideCards = document.querySelectorAll('.guide-card');
+
+            filterButtons.forEach(button => {
+                button.addEventListener('click', () => {
+                    const filter = button.dataset.filter;
+                    const themeData = themeVariables[localStorage.getItem('theme') || 'dark'];
+
+                    // Buton stilini güncelle
+                    filterButtons.forEach(btn => {
+                        btn.classList.remove('active-filter');
+                        btn.style.backgroundColor = 'transparent';
+                        btn.style.color = themeData['--primary-color'];
+                    });
+                    
+                    button.classList.add('active-filter');
+                    button.style.backgroundColor = themeData['--primary-color'];
+                    button.style.color = 'black';
+
+                    // Kartları filtrele
+                    guideCards.forEach(card => {
+                        card.classList.add('hidden'); 
+
+                        setTimeout(() => {
+                             if (filter === 'all' || card.dataset.category === filter) {
+                                card.classList.remove('hidden'); 
+                            }
+                        }, 50); 
+                       
+                    });
+                });
+            });
+            // Başlangıçta "Tümü" butonunu aktif yap
+            document.querySelector('.filter-btn[data-filter="all"]').click(); 
+        });
+    </script>
+</body>
+</html>

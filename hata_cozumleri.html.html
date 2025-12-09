@@ -1,0 +1,416 @@
+﻿<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>VALO-HUB | Hata Çözümleri ve Temiz Kurulum Rehberi</title>
+    <meta name="description" content="Valorant ve Riot Games hatalarının en güncel çözümleri ve temiz kurulum rehberi." />
+    
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;800;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+    
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <script>
+        // Tailwind konfigürasyonu
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Poppins', 'sans-serif'],
+                    },
+                    colors: {
+                        // Tema renklerini koruyoruz
+                        'primary-dark': '#4ADE80', 
+                        'secondary-dark': '#F97316', 
+                        'primary-gaming': '#F472B6',
+                        'secondary-gaming': '#A855F7',
+                    }
+                }
+            }
+        }
+    </script>
+    
+    <style>
+        /* Temel CSS Değişkenleri (Taktikler.html ile Uyumlu) */
+        :root {
+            --primary-color: #4ADE80;
+            --secondary-color: #F97316;
+            --primary-border-color: #4ade8030;
+            --primary-shadow-color: rgba(74, 222, 128, 0.5);
+            --card-bg-color: #18181b; 
+            --article-bg-color: #0a0a0a; 
+            --text-color: #ffffff;
+            --text-muted-color: #ccc;
+        }
+
+        /* Tema ve Animasyon Geçişleri */
+        body { transition: background-color 0.5s ease; }
+        * { transition: color 0.5s ease, background-color 0.5s ease, border-color 0.5s ease, box-shadow 0.5s ease; }
+
+        .scroll-text { white-space: nowrap; animation: scroll 45s linear infinite; padding-left: 100%; }
+        @keyframes scroll { from { transform: translateX(0); } to { transform: translateX(-100%); } }
+        
+        #guide-page-hero::before { 
+            content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+            background: radial-gradient(circle at top left, var(--primary-color)20, transparent 40%),
+                        radial-gradient(circle at bottom right, var(--secondary-color)20, transparent 40%);
+            opacity: 0.15; z-index: 0;
+        }
+
+        /* Navigasyon Stilleri */
+        #side-nav {
+            position: sticky;
+            top: 150px; /* Header altından başla */
+            max-height: calc(100vh - 200px);
+            overflow-y: auto;
+            border-left: 4px solid var(--primary-color);
+            padding-left: 1.5rem;
+        }
+
+        .nav-link {
+            display: block;
+            padding: 0.5rem 0;
+            color: var(--text-muted-color);
+            border-radius: 4px;
+            transition: all 0.3s ease;
+            font-size: 0.9rem;
+        }
+
+        .nav-link:hover {
+            color: var(--primary-color);
+            transform: translateX(5px);
+        }
+
+        .nav-link.active {
+            color: var(--secondary-color);
+            font-weight: bold;
+            transform: translateX(0);
+        }
+
+        /* Çözüm Kartları */
+        .solution-card {
+            background-color: var(--card-bg-color);
+            border-radius: 1.5rem;
+            padding: 2.5rem;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.3);
+            border: 1px solid var(--primary-border-color);
+            margin-bottom: 2rem;
+        }
+        
+        /* Ana Başlıklar (Kaydırma Hedefleri) */
+        .section-anchor {
+            scroll-margin-top: 150px; /* Header'ı telafi et */
+        }
+    </style>
+</head>
+<body id="body" class="bg-zinc-950 text-white dark:bg-black font-sans transition-colors duration-500 theme-dark">
+
+    <div class="fixed top-0 w-full z-[999]">
+        <div id="news-ticker" class="text-black py-1 overflow-hidden" style="background-color: var(--secondary-color);">
+            <div class="scroll-text text-sm font-bold tracking-widest uppercase">
+                &nbsp;🔥 RİOT VANGUARD UYUMSUZLUĞU ÇÖZÜMLERİ İÇİN SAYFAYA GÖZ ATIN! &nbsp;🎯 En Hızlı Hata Giderme Rehberi. &nbsp;🧠 Profesyonel Çözümler. &nbsp;
+            </div>
+        </div>
+
+        <header id="main-header" class="w-full bg-zinc-950/90 backdrop-blur-md border-b shadow-2xl" style="border-color: var(--primary-color);">
+            <div class="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
+                <h1 class="text-3xl font-extrabold tracking-tight flex items-center gap-2">
+                    <a href="index.html" class="flex items-center gap-2 text-white">
+                        <span style="color: var(--primary-color);" class="text-4xl">⚔️</span> VALO-HUB
+                    </a>
+                </h1>
+                <nav class="hidden lg:block space-x-8">
+                    <a href="araclar.html" class="transition font-bold text-lg" style="color: var(--text-color); --hover-color: var(--primary-color);" onmouseover="this.style.color=this.style.getPropertyValue('--hover-color')" onmouseout="this.style.color='var(--text-color)'">🛠️ Araçlar</a>
+                    <a href="yol_haritasi.html" class="transition text-lg" style="color: var(--text-color); --hover-color: var(--primary-color);" onmouseover="this.style.color=this.style.getPropertyValue('--hover-color')" onmouseout="this.style.color='var(--text-color)'">Yol Haritası</a>
+                    <a href="rehberler.html" class="transition text-lg" style="color: var(--text-color); --hover-color: var(--primary-color);" onmouseover="this.style.color=this.style.getPropertyValue('--hover-color')" onmouseout="this.style.color='var(--text-color)'">📰 Rehberler</a>
+                    <a href="taktikler.html" class="transition text-lg" style="color: var(--text-color); --hover-color: var(--primary-color);" onmouseover="this.style.color=this.style.getPropertyValue('--hover-color')" onmouseout="this.style.color='var(--text-color)'">💣 Taktikler</a>
+                    <a href="hata_cozumleri.html" class="transition text-lg font-bold" style="color: var(--primary-color); border-bottom: 3px solid var(--primary-color);">🐛 Hata Çözümleri</a>
+                </nav>
+            </div>
+        </header>
+    </div>
+
+    <button id="toggleBg" class="fixed top-28 right-6 z-[999] p-3 rounded-full shadow-2xl transition duration-300 border border-white/20" style="background-color: var(--card-bg-color); color: var(--text-color);">
+        <span id="bgIcon">🌑</span>
+    </button>
+    
+    <main class="max-w-7xl mx-auto px-6 pt-32 pb-16 grid grid-cols-12 gap-10">
+        
+        <aside class="hidden lg:block col-span-3">
+            <nav id="side-nav">
+                <h3 class="text-xl font-bold mb-3 mt-3" style="color: var(--secondary-color);">İçindekiler</h3>
+                </nav>
+        </aside>
+
+        <div class="col-span-12 lg:col-span-9">
+            
+            <header id="guide-page-hero" class="text-center rounded-3xl mb-12 shadow-2xl border-b-4 border-t-4" style="border-color: var(--secondary-color); position: relative; padding: 4rem 0; overflow: hidden; background: var(--article-bg-color);">
+                <div class="relative z-10 p-8 pt-16 pb-16">
+                    <h2 class="text-6xl font-extrabold mb-4 leading-tight tracking-tighter" style="color: var(--secondary-color);">
+                        🚨 RİOT HATA ÇÖZÜMLERİ MERKEZİ
+                    </h2>
+                    <p class="text-xl text-gray-300 max-w-4xl mx-auto mb-6">
+                        En sık karşılaşılan Valorant ve Riot istemcisi hataları için adım adım rehberler.
+                    </p>
+                    <a href="#clean-install-steps" id="clean-install-button" class="inline-block py-3 px-8 rounded-full font-bold text-lg transition duration-300 transform hover:scale-105" 
+                       style="background-color: var(--primary-color); color: #000; box-shadow: 0 0 20px var(--primary-shadow-color);">
+                        <i class="fa-solid fa-redo-alt"></i> Temiz Kurulum Adımlarına Git
+                    </a>
+                </div>
+            </header>
+
+            <section class="section-anchor" id="vanguard-errors">
+                <h3 class="text-4xl font-extrabold mb-8 pb-3 border-b-2" style="border-color: var(--primary-color); color: var(--primary-color);">
+                    <i class="fa-solid fa-shield-alt"></i> Riot Vanguard (VAN) Hataları
+                </h3>
+
+                <article class="solution-card">
+                    <h4 class="text-2xl font-bold mb-4" style="color: var(--secondary-color);">VAN 1067: Bağlantı Hatası / Güvenli Önyükleme</h4>
+                    <p class="text-lg text-gray-300 mb-4">Bu genellikle Windows'ta Güvenli Önyükleme (Secure Boot) veya TPM 2.0 ayarının kapalı olduğu anlamına gelir.</p>
+                    <ol class="list-decimal list-inside text-gray-400 space-y-2">
+                        <li>**BIOS Kontrolü:** Bilgisayarınızı yeniden başlatın ve BIOS/UEFI ayarlarına girin. (Genellikle F2, F10 veya Del tuşu).</li>
+                        <li>**Güvenli Önyüklemeyi Açın:** "Security" veya "Boot" menüsü altında "Secure Boot" seçeneğini **Enabled** (Etkin) olarak ayarlayın.</li>
+                        <li>**TPM 2.0'ı Kontrol Edin:** Ayrıca "TPM" veya "PSP Fw" ayarının etkin olduğundan emin olun.</li>
+                        <li>**Riot Vanguard'ı Yeniden Başlatın:** Ayarları kaydedip çıktıktan sonra, Windows'u açın ve görev çubuğundaki Vanguard ikonuna sağ tıklayıp çıkış yapın, sonra istemciyi yeniden açın.</li>
+                    </ol>
+                </article>
+
+                <article class="solution-card">
+                    <h4 class="text-2xl font-bold mb-4" style="color: var(--secondary-color);">VAN 5: Riot İstemcisi Bağlantı Sorunu</h4>
+                    <p class="text-lg text-gray-300 mb-4">Sunucularla bağlantı kurulamadı. Genellikle sunucu kapalı kalma süresinden kaynaklanır, ancak yerel ağınızda da sorun olabilir.</p>
+                    <ul class="list-disc list-inside text-gray-400 space-y-2">
+                        <li>**Sunucu Durumu:** Öncelikle Riot Games'in sunucu durumu sayfasını kontrol edin.</li>
+                        <li>**DNS Değiştirme:** DNS ayarlarınızı Google DNS (8.8.8.8 ve 8.8.4.4) olarak değiştirmeyi deneyin.</li>
+                        <li>**Güvenlik Duvarı:** Windows Defender Güvenlik Duvarı veya üçüncü taraf bir güvenlik yazılımının Valorant ve Vanguard'ı engellemediğinden emin olun.</li>
+                    </ul>
+                </article>
+            </section>
+            
+            <div class="my-10 border-t border-gray-700"></div>
+
+            <section class="section-anchor" id="installation-errors">
+                <h3 class="text-4xl font-extrabold mb-8 pb-3 border-b-2" style="border-color: var(--primary-color); color: var(--primary-color);">
+                    <i class="fa-solid fa-download"></i> Kurulum ve Yama (Patch) Hataları
+                </h3>
+
+                <article class="solution-card">
+                    <h4 class="text-2xl font-bold mb-4" style="color: var(--secondary-color);">VAL 46: Sistem Yükseltme Zorunluluğu</h4>
+                    <p class="text-lg text-gray-300 mb-4">Genellikle Windows sürümünüzün Valorant'ın minimum gereksinimlerini karşılamadığı anlamına gelir.</p>
+                    <ul class="list-disc list-inside text-gray-400 space-y-2">
+                        <li>**Windows Güncellemesi:** Windows Update ayarlarınızı kontrol edin ve tüm kritik güncellemeleri yapın.</li>
+                        <li>**İstemci Dosyaları:** Riot Games İstemcisini silip yeniden kurmayı deneyin.</li>
+                    </ul>
+                </article>
+            </section>
+            
+            <div class="my-10 border-t border-gray-700"></div>
+            
+            <section class="section-anchor" id="clean-install-steps">
+                <h3 class="text-4xl font-extrabold mb-8 pb-3 border-b-2" style="border-color: var(--secondary-color); color: var(--secondary-color);">
+                    <i class="fa-solid fa-broom"></i> Kapsamlı Temiz Kurulum Rehberi
+                </h3>
+
+                <p class="text-lg text-gray-300 mb-6">
+                    Diğer tüm çözümler başarısız olursa, Valorant'ı ve Riot Vanguard'ı tamamen kaldırıp yeniden yüklemek kesin çözümdür.
+                </p>
+
+                <article class="solution-card">
+                    <h4 class="text-2xl font-bold mb-4" style="color: var(--primary-color);">Adım 1: Vanguard ve Valorant'ı Kaldırın</h4>
+                    <ol class="list-decimal list-inside text-gray-400 space-y-2">
+                        <li>Windows arama çubuğuna "Program Ekle veya Kaldır" yazın.</li>
+                        <li>Listede **Riot Vanguard**'ı bulun ve Kaldır butonuna basın. (Çıkan uyarıya evet deyin).</li>
+                        <li>Aynı listede **Valorant** veya **Riot Games** istemcisini bulun ve Kaldırın.</li>
+                    </ol>
+                </article>
+
+                <article class="solution-card">
+                    <h4 class="text-2xl font-bold mb-4" style="color: var(--primary-color);">Adım 2: Kalan Dosyaları Silin</h4>
+                    <ol class="list-decimal list-inside text-gray-400 space-y-2">
+                        <li>Klavyenizde <kbd>Windows + R</kbd> tuşlarına basın.</li>
+                        <li>Açılan pencereye <code class="bg-gray-700 p-1 rounded">C:\Riot Games\</code> yazın ve **tüm klasörleri silin.** (Valorant'ı kurduğunuz klasör neresiyse oraya gidin).</li>
+                        <li>Tekrar <kbd>Windows + R</kbd> tuşlarına basıp bu sefer <code class="bg-gray-700 p-1 rounded">%localappdata%\</code> yazın. Buradaki Riot Games klasörünü silin.</li>
+                    </ol>
+                </article>
+                
+                <article class="solution-card">
+                    <h4 class="text-2xl font-bold mb-4" style="color: var(--primary-color);">Adım 3: Yeniden Kurulum</h4>
+                    <ul class="list-disc list-inside text-gray-400 space-y-2">
+                        <li>Valorant'ın resmi web sitesinden kurulum dosyasını yeniden indirin.</li>
+                        <li>Kurulum dosyasını Yönetici olarak çalıştırın.</li>
+                        <li>Oyun yeniden kurulduğunda, Valorant'ı açmadan önce bilgisayarınızı **kesinlikle yeniden başlatın** ki Vanguard düzgün yüklenebilsin.</li>
+                    </ul>
+                </article>
+            </section>
+        </div>
+    </main>
+    
+    <footer class="bg-black/80 border-t border-white/10 mt-20">
+        <div class="max-w-7xl mx-auto px-6 py-8 text-sm text-gray-500 flex flex-col md:flex-row items-center justify-between">
+            <div>© 2025 Mami’s VALO-HUB DATA CENTER — En Detaylı Valorant Kaynağı.</div>
+            <div>Kod ve Tasarım: <strong style="color: var(--primary-color);">Mami</strong></div>
+        </div>
+    </footer>
+    
+    <script>
+        
+        // --- TEMA YÖNETİMİ FONKSİYONLARI (Önceki Sayfalardan Alındı) ---
+        const themes = ['dark', 'light', 'gaming'];
+        const themeIcons = { 'dark': '🌑', 'light': '☀️', 'gaming': '👾' };
+        
+        const themeVariables = {
+            'dark': { /* ... tema değişkenleriniz ... */ },
+            'light': { /* ... tema değişkenleriniz ... */ },
+            'gaming': { /* ... tema değişkenleriniz ... */ }
+        };
+
+        const themeVariablesData = {
+            'dark': {
+                '--primary-color': '#4ADE80', 
+                '--secondary-color': '#F97316', 
+                '--primary-border-color': '#4ade8030',
+                '--primary-shadow-color': 'rgba(74, 222, 128, 0.5)',
+                '--card-bg-color': '#18181b', 
+                '--article-bg-color': '#0a0a0a', 
+                '--text-color': '#ffffff',
+                '--text-muted-color': '#ccc',
+                'bg-class': 'bg-zinc-950',
+                'text-class': 'text-white'
+            },
+            'light': {
+                '--primary-color': '#3B82F6', 
+                '--secondary-color': '#DC2626', 
+                '--primary-border-color': '#3B82F630',
+                '--primary-shadow-color': 'rgba(59, 130, 246, 0.5)',
+                '--card-bg-color': '#F3F4F6', 
+                '--article-bg-color': '#FFFFFF', 
+                '--text-color': '#1f2937',
+                '--text-muted-color': '#6b7280',
+                'bg-class': 'bg-gray-50',
+                'text-class': 'text-gray-900'
+            },
+            'gaming': {
+                '--primary-color': '#F472B6', 
+                '--secondary-color': '#A855F7', 
+                '--primary-border-color': '#F472B630',
+                '--primary-shadow-color': 'rgba(244, 114, 182, 0.5)',
+                '--card-bg-color': '#0f0b15', 
+                '--article-bg-color': '#06040a', 
+                '--text-color': '#ffffff',
+                '--text-muted-color': '#b3b3b3',
+                'bg-class': 'bg-black',
+                'text-class': 'text-white'
+            }
+        };
+
+        function applyTheme(themeName) {
+            const themeData = themeVariablesData[themeName];
+            const body = document.getElementById('body');
+            const bgIcon = document.getElementById('bgIcon');
+            const root = document.documentElement;
+
+            body.classList.remove(...body.classList);
+            body.classList.add(`theme-${themeName}`, themeData['bg-class'], themeData['text-class'], 'font-sans', 'transition-colors', 'duration-500');
+
+            for (const [key, value] of Object.entries(themeData)) {
+                if (key.startsWith('--')) {
+                    root.style.setProperty(key, value);
+                }
+            }
+            document.getElementById('main-header').style.backgroundColor = themeName === 'light' ? 'rgba(255, 255, 255, 0.9)' : 'rgba(10, 10, 10, 0.9)';
+            document.getElementById('main-header').style.borderColor = themeData['--primary-color'];
+            
+            bgIcon.textContent = themeIcons[themeName]; 
+            localStorage.setItem('theme', themeName);
+        }
+
+        function toggleNextTheme() {
+            const currentTheme = localStorage.getItem('theme') || 'dark';
+            const currentIndex = themes.indexOf(currentTheme);
+            const nextIndex = (currentIndex + 1) % themes.length;
+            const nextTheme = themes[nextIndex];
+            applyTheme(nextTheme);
+        }
+
+        // --- SAYFA İÇİ NAVİGASYON VE KAYDIRMA YÖNETİMİ ---
+
+        function setupSideNav() {
+            const sideNav = document.getElementById('side-nav');
+            const sections = document.querySelectorAll('.section-anchor h3');
+            sideNav.innerHTML = '<h3 class="text-xl font-bold mb-3 mt-3" style="color: var(--secondary-color);">İçindekiler</h3>';
+
+            sections.forEach(header => {
+                const text = header.textContent.trim();
+                // h3'ten anchor ID'yi al
+                const id = header.parentElement.id; 
+                
+                const link = document.createElement('a');
+                link.href = `#${id}`;
+                link.className = 'nav-link';
+                link.textContent = text;
+                
+                link.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    // Smooth kaydırma (header'ın altında durması için CSS'te scroll-margin-top ayarlandı)
+                    document.getElementById(id).scrollIntoView({ behavior: 'smooth' });
+                });
+                
+                sideNav.appendChild(link);
+            });
+        }
+
+        function setActiveLink() {
+            const navLinks = document.querySelectorAll('.nav-link');
+            const headerHeight = 150; // Kaydırma boşluğunu telafi et
+
+            navLinks.forEach(link => {
+                const targetId = link.getAttribute('href').substring(1);
+                const targetSection = document.getElementById(targetId);
+                
+                if (!targetSection) return;
+
+                const rect = targetSection.getBoundingClientRect();
+                
+                // Bölüm ekranda görünüyorsa ve üst kısmı üst sınıra yakınsa active yap
+                if (rect.top <= headerHeight && rect.bottom >= headerHeight) {
+                    navLinks.forEach(l => l.classList.remove('active'));
+                    link.classList.add('active');
+                }
+            });
+             // Sayfanın en üstünde veya "Temiz Kurulum" butonu için
+            const cleanInstallBtn = document.getElementById('clean-install-button');
+            const targetId = cleanInstallBtn.getAttribute('href').substring(1);
+            const targetSection = document.getElementById(targetId);
+            
+            if (targetSection && targetSection.getBoundingClientRect().top <= headerHeight + 10 && window.scrollY < targetSection.offsetTop - headerHeight) {
+                // Eğer en üstte değilsek, butonu pasif bırak
+                cleanInstallBtn.classList.remove('active'); 
+            } else if (targetSection && targetSection.getBoundingClientRect().top <= headerHeight) {
+                 // Temiz Kurulum bölümüne ulaşıldıysa butonu vurgula (opsiyonel)
+                cleanInstallBtn.classList.add('active'); 
+            } else {
+                cleanInstallBtn.classList.remove('active'); 
+            }
+        }
+
+
+        document.addEventListener('DOMContentLoaded', () => {
+            
+            // Tema Yükleme
+            const savedTheme = localStorage.getItem('theme');
+            applyTheme(savedTheme || 'dark'); 
+            document.getElementById('toggleBg').addEventListener('click', toggleNextTheme);
+
+            // Yan Navigasyonu Kurma
+            setupSideNav();
+
+            // Kaydırma olayını dinleme (Aktif linki vurgulamak için)
+            window.addEventListener('scroll', setActiveLink);
+            
+            // Başlangıçta aktif linki belirle
+            setActiveLink();
+        });
+    </script>
+</body>
+</html>

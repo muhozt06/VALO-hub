@@ -1,0 +1,283 @@
+﻿<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Profesyonel Oyuncu Sensivity Ayarları Rehberi | VALO-HUB</title>
+    <meta name="description" content="Profesyonel Valorant oyuncularının kullandığı DPI, eDPI, Scope ve Crosshair ayarlarının detaylı ve karşılaştırmalı tablosu." />
+    
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;800;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+    
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Poppins', 'sans-serif'],
+                    },
+                    colors: {
+                        'primary-dark': '#4ADE80', 
+                        'secondary-dark': '#F97316', 
+                    }
+                }
+            }
+        }
+    </script>
+    
+    <style>
+        /* Ortak CSS Değişkenleri ve Stiller */
+        .scroll-text { white-space: nowrap; animation: scroll 45s linear infinite; padding-left: 100%; }
+        @keyframes scroll { from { transform: translateX(0); } to { transform: translateX(-100%); } }
+        
+        #guide-page-hero { position: relative; padding: 4rem 0; overflow: hidden; background: var(--article-bg-color); }
+        #guide-page-hero::before { 
+            content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+            background: radial-gradient(circle at top left, var(--primary-color)30, transparent 40%),
+                        radial-gradient(circle at bottom right, var(--secondary-color)30, transparent 40%);
+            opacity: 0.15; z-index: 0;
+        }
+
+        /* Temel CSS Değişkenleri (JavaScript ile üzerine yazılır) */
+        :root {
+            --primary-color: #4ADE80;
+            --secondary-color: #F97316;
+            --primary-border-color: #4ade8030;
+            --primary-shadow-color: rgba(74, 222, 128, 0.5);
+            --primary-shadow-color-light: rgba(74, 222, 128, 0.15);
+            --card-bg-color: #18181b;
+            --article-bg-color: #0a0a0a;
+        }
+
+        /* Tablo Stilleri */
+        .settings-table th {
+            background-color: var(--secondary-color);
+            color: black;
+            font-weight: 800;
+            padding: 1rem;
+            text-align: center;
+        }
+        .settings-table td {
+            padding: 0.75rem;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            text-align: center;
+        }
+        .settings-table tr:nth-child(even) {
+            background-color: var(--card-bg-color);
+        }
+        .player-name {
+            text-align: left;
+            font-weight: 700;
+            color: var(--primary-color);
+            padding-left: 1rem;
+        }
+    </style>
+</head>
+<body id="body" class="bg-zinc-950 text-white dark:bg-black font-sans transition-colors duration-500 theme-dark">
+
+    <div class="fixed top-0 w-full z-[999]">
+        <div id="news-ticker" class="text-black py-1 overflow-hidden" style="background-color: var(--secondary-color);">
+            <div class="scroll-text text-sm font-bold tracking-widest uppercase">
+                &nbsp;🚨 Yeni YAMA 9.0: Jett Nerf'ü Sonrası Duelist Meta Analizi! &nbsp;🔥 VCT Tokyo Final Maçlarının Tüm Taktikleri! &nbsp;🎯 FPS Optimizasyonu ile %30 Performans Artışı Garantili! &nbsp;💰 3. Round Ekonomi Yönetimi ve Satın Alma Stratejileri. &nbsp;🧠 Yüksek Rank Mentalitesi Rehberi! &nbsp;
+            </div>
+        </div>
+
+        <header id="main-header" class="w-full bg-zinc-950/90 backdrop-blur-sm border-b shadow-xl" style="border-color: var(--primary-color);">
+            <div class="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
+                <h1 class="text-3xl font-extrabold tracking-tight flex items-center gap-2" style="color: var(--primary-color);">
+                    <a href="index.html" class="flex items-center gap-2 text-white">
+                        <span style="color: var(--primary-color);" class="text-4xl">⚔️</span> VALO-HUB
+                    </a>
+                </h1>
+                <nav class="hidden lg:block space-x-8">
+                    <a href="rehberler.html" class="transition text-lg font-bold" style="color: var(--primary-color); --hover-color: var(--primary-color);" onmouseover="this.style.color=this.style.getPropertyValue('--hover-color')" onmouseout="this.style.color=this.style.getPropertyValue('--primary-color')">← Rehberlere Dön</a>
+                </nav>
+            </div>
+        </header>
+    </div>
+    
+    <button id="toggleBg" class="fixed top-28 right-6 z-[999] bg-zinc-700 hover:bg-zinc-600 text-white p-3 rounded-full shadow-2xl transition duration-300 border border-white/20">
+        <span id="bgIcon">🌑</span>
+    </button>
+
+
+    <main class="max-w-7xl mx-auto px-6 pt-32 pb-16">
+        
+        <header id="guide-page-hero" class="text-center rounded-3xl mb-16 shadow-2xl border-b-4 border-t-4" style="border-color: var(--primary-color);">
+            <div class="relative z-10 p-8 pt-16 pb-16">
+                <h2 class="text-6xl font-extrabold mb-4 leading-tight tracking-tighter" style="color: var(--primary-color);">
+                    🎯 PRO OYUNCU AYARLARI
+                </h2>
+                <p class="text-xl text-gray-300 max-w-4xl mx-auto">
+                    Global şampiyonların tercih ettiği Sensivity, eDPI ve Scope ayarları. Mükemmel hassasiyet ayarını bulmak için karşılaştırın.
+                </p>
+            </div>
+        </header>
+
+        <section class="mb-16 p-8 rounded-xl" style="background-color: var(--card-bg-color);">
+            <h3 class="text-3xl font-extrabold mb-6 border-b pb-3" style="color: var(--secondary-color); border-color: var(--secondary-color)50;">
+                🖱️ Sensivity ve DPI Karşılaştırmalı Tablo
+            </h3>
+            <p class="text-gray-400 mb-8">
+                **eDPI (Effective DPI):** DPI * Oyun İçi Sensivity değerinin çarpımıdır. Bu değer, oyuncunun ne kadar hızlı dönebildiğini gösterir.
+            </p>
+
+            <div class="overflow-x-auto rounded-lg shadow-xl border border-white/10">
+                <table class="w-full text-sm settings-table">
+                    <thead>
+                        <tr>
+                            <th class="text-left">Oyuncu (Takım)</th>
+                            <th>DPI</th>
+                            <th>Sensivity</th>
+                            <th>eDPI (Kritik)</th>
+                            <th>Nişan Hassasiyeti (Zoom)</th>
+                            <th>Crosshair Kodu</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr class="text-white">
+                            <td class="player-name">TenZ (Sentinels)</td>
+                            <td>800</td>
+                            <td>0.30</td>
+                            <td>240</td>
+                            <td>1.0</td>
+                            <td>0;P;c;5;h;0;m;1;0t;1;0l;2;0o;2;0a;1;0f;0;1t;0;1l;0;1o;0;1a;0;1f;0</td>
+                        </tr>
+                        
+                        <tr class="text-white">
+                            <td class="player-name">s1mple (Transfer)</td>
+                            <td>400</td>
+                            <td>0.70</td>
+                            <td>280</td>
+                            <td>1.1</td>
+                            <td>0;P;c;1;o;1;0t;1;0l;3;0v;3;0g;1;0o;2;0a;1;0f;0;1t;0;1l;0;1o;0;1a;0;1f;0</td>
+                        </tr>
+
+                         <tr class="text-white">
+                            <td class="player-name">yay (Blessing)</td>
+                            <td>1600</td>
+                            <td>0.25</td>
+                            <td>400</td>
+                            <td>1.0</td>
+                            <td>0;P;c;7;o;1;0t;3;0l;1;0o;2;0a;1;0f;0;1t;0;1l;0;1o;0;1a;0;1f;0</td>
+                        </tr>
+
+                        <tr class="text-white">
+                            <td class="player-name">Chronicle (Fnatic)</td>
+                            <td>800</td>
+                            <td>0.38</td>
+                            <td>304</td>
+                            <td>1.0</td>
+                            <td>0;P;o;1;0t;1;0l;3;0o;1;0a;1;0f;0;1t;0;1l;0;1o;0;1a;0;1f;0</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+        
+        <section class="mb-16 p-8 rounded-xl" style="background-color: var(--article-bg-color); border: 2px solid var(--primary-color)50;">
+            <h3 class="text-3xl font-extrabold mb-6 border-b pb-3" style="color: var(--primary-color); border-color: var(--primary-color)50;">
+                🧠 Ayarınızı Bulma Rehberi
+            </h3>
+
+            <div class="grid md:grid-cols-2 gap-8 text-gray-300">
+                <div>
+                    <h4 class="text-xl font-bold mb-3" style="color: var(--secondary-color);">eDPI Aralığı</h4>
+                    <p class="text-sm mb-4">
+                        Profesyonel oyuncuların çoğu **250 ile 450 eDPI** aralığında oynar. Düşük eDPI (200-300), uzun mesafelerde isabeti artırır ancak hızlı 180 derece dönüşleri zorlaştırır. Yüksek eDPI (400+) ise yakın çatışmalarda hızlı reaksiyon sağlar.
+                    </p>
+                </div>
+
+                <div>
+                    <h4 class="text-xl font-bold mb-3" style="color: var(--secondary-color);">Crosshair Kodu Nasıl Kullanılır?</h4>
+                    <p class="text-sm">
+                        Yukarıdaki Crosshair Kodlarını kopyalayın ve Valorant'ta Ayarlar > Artı İşareti bölümünde **İçe Aktar (Import Profile Code)** butonuna tıklayarak direkt olarak uygulayabilirsiniz. Bu, ünlü oyuncuların nişangahlarını denemek için en kolay yoldur.
+                    </p>
+                </div>
+            </div>
+        </section>
+        
+        <div class="text-center mt-12">
+             <a href="rehberler.html" class="inline-block px-8 py-3 rounded-full text-lg font-bold transition duration-300 hover:scale-105" style="background-color: var(--primary-color); color: black;">
+                ← Tüm Rehberlere Geri Dön
+            </a>
+        </div>
+
+    </main>
+    
+    <footer class="bg-black/80 border-t border-white/10 mt-20">
+        <div class="max-w-7xl mx-auto px-6 py-8 text-sm text-gray-500 flex flex-col md:flex-row items-center justify-between">
+            <div>© 2025 Mami’s VALO-HUB DATA CENTER — En Detaylı Valorant Kaynağı.</div>
+            <div>Kod ve Tasarım: <strong style="color: var(--primary-color);">Mami</strong></div>
+        </div>
+    </footer>
+    
+    <script>
+        const themes = ['dark', 'light', 'gaming'];
+        const themeIcons = { 'dark': '🌑', 'light': '☀️', 'gaming': '👾' };
+        const themeVariables = {
+            'dark': {
+                '--primary-color': '#4ADE80', '--secondary-color': '#F97316', '--primary-border-color': '#4ade8030',
+                '--primary-shadow-color': 'rgba(74, 222, 128, 0.5)', '--primary-shadow-color-light': 'rgba(74, 222, 128, 0.15)',
+                '--card-bg-color': '#18181b', '--article-bg-color': '#0a0a0a', 
+                'bg-class': 'bg-zinc-950', 'text-class': 'text-white', 'header-bg': 'rgba(10, 10, 10, 0.9)'
+            },
+            'light': {
+                '--primary-color': '#3B82F6', '--secondary-color': '#DC2626', '--primary-border-color': '#3B82F630',
+                '--primary-shadow-color': 'rgba(59, 130, 246, 0.5)', '--primary-shadow-color-light': 'rgba(59, 130, 246, 0.15)',
+                '--card-bg-color': '#F3F4F6', '--article-bg-color': '#FFFFFF', 
+                'bg-class': 'bg-gray-50', 'text-class': 'text-gray-900', 'header-bg': 'rgba(255, 255, 255, 0.9)'
+            },
+            'gaming': {
+                '--primary-color': '#F472B6', '--secondary-color': '#A855F7', '--primary-border-color': '#F472B630',
+                '--primary-shadow-color': 'rgba(244, 114, 182, 0.5)', '--primary-shadow-color-light': 'rgba(244, 114, 182, 0.15)',
+                '--card-bg-color': '#0f0b15', '--article-bg-color': '#06040a', 
+                'bg-class': 'bg-black', 'text-class': 'text-white', 'header-bg': 'rgba(6, 4, 10, 0.9)'
+            }
+        };
+
+        document.addEventListener('DOMContentLoaded', () => {
+            const body = document.getElementById('body');
+            const toggleBtn = document.getElementById('toggleBg');
+            const bgIcon = document.getElementById('bgIcon');
+            const root = document.documentElement;
+
+            function applyTheme(themeName) {
+                const themeData = themeVariables[themeName];
+                body.classList.remove('theme-dark', 'theme-light', 'theme-gaming', 'bg-zinc-950', 'bg-gray-50', 'bg-black', 'text-white', 'text-gray-900');
+                body.classList.add(`theme-${themeName}`, themeData['bg-class'], themeData['text-class']);
+
+                for (const [key, value] of Object.entries(themeData)) {
+                    if (key.startsWith('--')) {
+                        root.style.setProperty(key, value);
+                    }
+                }
+
+                document.getElementById('news-ticker').style.backgroundColor = themeData['--secondary-color'];
+                document.getElementById('main-header').style.backgroundColor = themeData['header-bg'];
+                document.getElementById('main-header').style.borderColor = themeData['--primary-color'];
+                bgIcon.textContent = themeIcons[themeName]; 
+                localStorage.setItem('theme', themeName);
+            }
+
+            function toggleNextTheme() {
+                const currentTheme = localStorage.getItem('theme') || 'dark';
+                const currentIndex = themes.indexOf(currentTheme);
+                const nextIndex = (currentIndex + 1) % themes.length;
+                const nextTheme = themes[nextIndex];
+                applyTheme(nextTheme);
+            }
+
+            const savedTheme = localStorage.getItem('theme');
+            applyTheme(savedTheme || 'dark'); 
+
+            if (toggleBtn) {
+                toggleBtn.addEventListener('click', toggleNextTheme);
+            }
+        });
+    </script>
+</body>
+</html>

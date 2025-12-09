@@ -1,0 +1,528 @@
+﻿<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>VALO-HUB: Gelişmiş Oyuncu Araçları & eDPI Merkezi</title>
+    <meta name="description" content="DPI, Hassasiyet dönüştürücü, eDPI, RR hesaplayıcısı, silah ve ajan verileri, ve profesyonel crosshair kodları." />
+    
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;800;900&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+    
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Poppins', 'sans-serif'],
+                        mono: ['Space Mono', 'monospace'],
+                    },
+                    colors: {
+                        'valo-green': '#4ADE80',
+                        'valo-orange': '#F97316',
+                        'valo-purple': '#A855F7',
+                        'valo-pink': '#F472B6',
+                    }
+                }
+            }
+        }
+    </script>
+    
+    <style>
+        /* CSS Değişkenleri (JS ile Tema Değişimi için kritik) */
+        :root {
+            --primary-color: #4ADE80; 
+            --secondary-color: #F97316; 
+            --primary-border-color: #4ade8030;
+            --card-bg-color: #18181b; 
+            --article-bg-color: #0a0a0a; 
+        }
+
+        #tools-page-hero { animation: fadeIn 1s ease-out; }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        #tools-page-hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: radial-gradient(var(--primary-color) 0.5px, transparent 0.5px);
+            background-size: 25px 25px;
+            opacity: 0.05;
+            z-index: 0;
+        }
+
+        .tool-card {
+            border: 2px solid var(--primary-border-color);
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.4);
+        }
+        .tool-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(74, 222, 128, 0.2); 
+        }
+        
+        input[type="text"], select {
+            background-color: white !important;
+            color: black !important;
+            border: 3px solid var(--secondary-color) !important; 
+            box-shadow: 0 0 8px rgba(249, 115, 22, 0.4) !important; 
+            transition: all 0.2s;
+            border-radius: 0.5rem;
+            padding: 0.75rem 1rem;
+            font-weight: 600;
+            cursor: text; 
+            appearance: none; 
+        }
+        
+        .scroll-text {
+            white-space: nowrap;
+            animation: scroll 45s linear infinite; 
+            padding-left: 100%;
+        }
+        @keyframes scroll {
+            from { transform: translateX(0); }
+            to { transform: translateX(-100%); }
+        }
+        
+        .hidden-code {
+            position: absolute;
+            width: 1px;
+            height: 1px;
+            padding: 0;
+            margin: -1px;
+            overflow: hidden;
+            clip: rect(0, 0, 0, 0);
+            white-space: nowrap;
+            border-width: 0;
+        }
+    </style>
+</head>
+<body id="body" class="bg-zinc-950 text-white dark:bg-black font-sans transition-colors duration-500 theme-dark">
+
+    <div class="fixed top-0 w-full z-[999]">
+        <div id="news-ticker" class="text-black py-1 overflow-hidden" style="background-color: var(--secondary-color);">
+            <div class="scroll-text text-sm font-bold tracking-widest uppercase">
+                &nbsp;🚨 Yeni YAMA 8.11: Jett Nerf'ü Sonrası Duelist Meta Analizi! &nbsp;🔥 VCT Tokyo Final Maçlarının Tüm Taktikleri! &nbsp;🎯 FPS Optimizasyonu ile %30 Performans Artışı Garantili! &nbsp;🚀 YENİ ÖZELLİKLERİ TEST ET!
+            </div>
+        </div>
+
+        <header id="main-header" class="w-full bg-zinc-950/90 backdrop-blur-sm border-b shadow-xl" style="border-color: var(--primary-color);">
+            <div class="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
+                <h1 class="text-3xl font-extrabold tracking-tight flex items-center gap-2" style="color: var(--primary-color);">
+                    <a href="index.html" class="flex items-center gap-2 text-white hover:opacity-80 transition">
+                        <span style="color: var(--primary-color);" class="text-4xl">⚔️</span> VALO-HUB
+                    </a>
+                </h1>
+                <nav class="hidden lg:block space-x-8">
+                    <a href="araclar.html" class="transition font-bold text-lg p-2 rounded hover:bg-white/10" style="color: var(--primary-color);">🛠️ Araçlar</a>
+                    <a href="yol_haritasi.html" class="transition text-lg text-white hover:text-[var(--primary-color)] p-2 rounded hover:bg-white/10">🗺️ Yol Haritası</a>
+                    <a href="rehberler.html" class="transition text-lg text-white hover:text-[var(--primary-color)] p-2 rounded hover:bg-white/10">📰 Rehberler</a>
+                    <a href="taktikler.html" class="transition text-lg text-white hover:text-[var(--primary-color)] p-2 rounded hover:bg-white/10">💣 Taktikler</a>
+                    <a href="hata_cozumleri.html" class="transition text-lg text-white hover:text-[var(--primary-color)] p-2 rounded hover:bg-white/10">🐛 Hata Çözümleri</a>
+                </nav>
+            </div>
+        </header>
+    </div>
+    
+    <button id="toggleBg" class="fixed top-28 right-6 z-[999] bg-zinc-700 hover:bg-zinc-600 text-white p-3 rounded-full shadow-2xl transition duration-300 border border-white/20">
+        <span id="bgIcon">🌑</span>
+    </button>
+
+    <main class="max-w-7xl mx-auto px-6 pt-24 pb-16">
+        
+        <header id="tools-page-hero" class="text-center relative rounded-3xl mb-16 shadow-2xl border-b-4 border-t-4" style="border-color: var(--secondary-color);">
+            <div class="relative z-10 p-8 pt-16 pb-16">
+                <h2 class="text-6xl font-extrabold mb-4 leading-tight tracking-tighter" style="color: var(--secondary-color);">
+                    ⚡ OYUNCU İSTATİSTİK MERKEZİ
+                </h2>
+                <p class="text-xl text-gray-300 max-w-4xl mx-auto">Ayarlarınızı optimize edin, profesyonel kodları kopyalayın ve MMR'ınızı tahmin edin.</p>
+            </div>
+        </header>
+        
+        ## 📊 Temel Hesaplayıcılar
+        <section class="mb-20">
+            <h3 class="text-4xl font-extrabold mb-8 border-b pb-3" style="color: var(--primary-color); border-color: var(--primary-color)50;">
+                ⚙️ OYUN İÇİ HESAPLAYICILAR
+            </h3>
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                
+                <div class="tool-card p-8 rounded-xl bg-zinc-900">
+                    <h4 class="text-3xl font-bold mb-4" style="color: var(--secondary-color);">DPI & Hassasiyet Dönüştürücü</h4>
+                    <p class="text-gray-400 mb-6">Oyunlar arası hassasiyetinizi ve eDPI değerinizi kolayca eşitleyin.</p>
+                    
+                    <form id="sens-form" onsubmit="return false;"> 
+                        <div class="space-y-4">
+
+                            <div class="flex flex-col">
+                                <label for="input-dpi" class="text-gray-300 mb-2 font-semibold">Mevcut DPI Değeriniz:</label>
+                                <input type="text" id="input-dpi" placeholder="Fare DPI değerini giriniz (Örn: 800)" 
+                                    class="w-full"/>
+                            </div>
+
+                            <div class="flex flex-col">
+                                <label for="source-game-input" class="text-gray-300 mb-2 font-semibold">Başlangıç Oyunu:</label>
+                                <select id="source-game-input" class="w-full text-black">
+                                    <option value="valorant">Valorant</option>
+                                    <option value="csgo">CS:GO / CS2</option>
+                                    <option value="pubg">PUBG</option>
+                                    <option value="apex">Apex Legends</option>
+                                </select>
+                            </div>
+
+                            <div class="flex flex-col">
+                                <label for="input-sens" class="text-gray-300 mb-2 font-semibold">Oyun İçi Hassasiyet Değeri (Örn: 0.4):</label>
+                                <input type="text" id="input-sens" placeholder="Hassasiyeti buraya giriniz..." 
+                                    class="w-full"/>
+                            </div>
+
+                            <div class="flex flex-col">
+                                <label for="target-game-input" class="text-gray-300 mb-2 font-semibold">Dönüştürülecek Oyun:</label>
+                                <select id="target-game-input" class="w-full text-black">
+                                    <option value="csgo">CS:GO / CS2</option>
+                                    <option value="valorant">Valorant</option>
+                                    <option value="pubg">PUBG</option>
+                                    <option value="apex">Apex Legends</option>
+                                </select>
+                            </div>
+                            
+                            <button type="button" id="calculate-sens-btn" class="w-full text-black font-extrabold py-3 rounded-xl shadow-lg mt-4 transition hover:opacity-80" style="background-color: var(--primary-color);">
+                                HASSASİYETİ HESAPLA
+                            </button>
+                        </div>
+                    </form>
+                    
+                    <div class="mt-8 p-4 rounded-lg text-center font-mono space-y-2" style="background-color: var(--article-bg-color); border: 2px dashed var(--secondary-color);">
+                        <p class="text-gray-400 font-semibold">Hesaplanan eDPI Değeri:</p>
+                        <p id="result-edpi" class="text-3xl font-extrabold" style="color: var(--primary-color);">eDPI: XXX</p>
+                        <hr class="border-white/10"/>
+                        <p class="text-gray-400 font-semibold">Hedef Oyun Hassasiyeti:</p>
+                        <p id="result-sens" class="text-4xl font-extrabold" style="color: var(--secondary-color);">0.XX</p>
+                    </div>
+                </div>
+
+                <div class="tool-card p-8 rounded-xl bg-zinc-900">
+                    <h4 class="text-3xl font-bold mb-4" style="color: var(--secondary-color);">RR Kazanım Tahmini (MMR Simülasyonu)</h4>
+                    <p class="text-gray-400 mb-6">Mevcut rankınıza ve performansınıza göre tahmini RR değişiminizi görün.</p>
+                    
+                    <form id="rr-form" onsubmit="return false;"> 
+                        <div class="space-y-4">
+                            
+                            <div class="flex flex-col">
+                                <label for="current-rank-input" class="text-gray-300 mb-2 font-semibold">Mevcut Rankınız:</label>
+                                <select id="current-rank-input" class="w-full text-black">
+                                    <option value="1">Demir 1</option><option value="2">Demir 2</option><option value="3">Demir 3</option>
+                                    <option value="4">Bronz 1</option><option value="5">Bronz 2</option><option value="6">Bronz 3</option>
+                                    <option value="7">Gümüş 1</option><option value="8">Gümüş 2</option><option value="9">Gümüş 3</option>
+                                    <option value="10">Altın 1</option><option value="11">Altın 2</option><option value="12">Altın 3</option>
+                                    <option value="13">Platin 1</option><option value="14">Platin 2</option><option value="15">Platin 3</option>
+                                    <option value="16">Elmas 1</option><option value="17">Elmas 2</option><option value="18">Elmas 3</option>
+                                    <option value="19">Ölümsüzlük 1</option><option value="20">Ölümsüzlük 2</option><option value="21">Ölümsüzlük 3</option>
+                                    <option value="22">Radyant</option>
+                                </select>
+                            </div>
+                            
+                            <div class="flex flex-col">
+                                <label for="performance-score" class="text-gray-300 mb-2 font-semibold">Maç Performans Puanı (1-5):</label>
+                                <select id="performance-score" class="w-full text-black">
+                                    <option value="5">5 - Mükemmel (Taşıdım / +KDA)</option>
+                                    <option value="4">4 - Çok İyi (Skor Yüksek)</option>
+                                    <option value="3">3 - Normal (Ortalama Skor)</option>
+                                    <option value="2">2 - Kötü (Skor Düşük / İlk Kan Kaybı)</option>
+                                    <option value="1">1 - Felaket (Dip Skor)</option>
+                                </select>
+                            </div>
+                            
+                            <div class="flex flex-col">
+                                <label for="match-result-input" class="text-gray-300 mb-2 font-semibold">Maç Sonucunuz:</label>
+                                <select id="match-result-input" class="w-full text-black">
+                                    <option value="win">Kazanmak (Win)</option>
+                                    <option value="loss">Kaybetmek (Loss)</option>
+                                    <option value="draw">Beraberlik (Draw)</option>
+                                </select>
+                            </div>
+
+                            <button type="button" id="calculate-rr-btn" class="w-full text-black font-extrabold py-3 rounded-xl shadow-lg mt-4 transition hover:opacity-80" style="background-color: var(--primary-color);">
+                                RR DEĞİŞİMİNİ TAHMİN ET
+                            </button>
+                        </div>
+                    </form>
+                    
+                    <div class="mt-8 p-4 rounded-lg text-center font-mono" style="background-color: var(--article-bg-color); border: 2px dashed var(--secondary-color);">
+                        <p class="text-gray-400 font-semibold">Tahmini RR Değişimi:</p>
+                        <p id="result-rr" class="text-4xl font-extrabold mt-1" style="color: var(--secondary-color);">+XX / -XX</p>
+                        <p id="current-rank-display" class="text-lg mt-2 font-medium" style="color: var(--primary-color);"></p>
+                    </div>
+                </div>
+                
+            </div>
+        </section>
+
+        ## 🔫 Silah ve Ekonomik Veriler
+        <section class="mb-20">
+            <h3 class="text-4xl font-extrabold mb-8 border-b pb-3" style="color: var(--valo-orange); border-color: var(--valo-orange)50;">
+                🔥 SİLAH VE EKİPMAN BİLGİLERİ
+            </h3>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                
+                <div class="tool-card p-6 rounded-xl bg-zinc-900 border-l-4 border-red-500 col-span-1 md:col-span-2">
+                    <h4 class="text-2xl font-bold mb-4 text-red-500">🔫 Temel Silah Hasar Tablosu (Zırhlı)</h4>
+                    <div class="overflow-x-auto">
+                        <table class="min-w-full text-sm font-mono text-left">
+                            <thead>
+                                <tr class="border-b border-white/20 text-gray-400">
+                                    <th class="py-2 px-1">Silah</th>
+                                    <th class="py-2 px-1">Kafa (Head)</th>
+                                    <th class="py-2 px-1">Vücut (Body)</th>
+                                    <th class="py-2 px-1">Ayak (Leg)</th>
+                                    <th class="py-2 px-1">Fiyat</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr class="border-b border-white/10">
+                                    <td class="py-2 px-1 font-bold text-valo-orange">Vandal</td>
+                                    <td class="py-2 px-1 text-red-400">160 (Tek atış)</td>
+                                    <td class="py-2 px-1">40</td>
+                                    <td class="py-2 px-1">34</td>
+                                    <td class="py-2 px-1 text-valo-green">2900</td>
+                                </tr>
+                                <tr class="border-b border-white/10">
+                                    <td class="py-2 px-1 font-bold text-valo-purple">Phantom</td>
+                                    <td class="py-2 px-1 text-yellow-400">124-140</td>
+                                    <td class="py-2 px-1">33-35</td>
+                                    <td class="py-2 px-1">28-30</td>
+                                    <td class="py-2 px-1 text-valo-green">2900</td>
+                                </tr>
+                                <tr class="border-b border-white/10">
+                                    <td class="py-2 px-1 font-bold text-gray-300">Ghost</td>
+                                    <td class="py-2 px-1 text-red-400">105 (Tek atış)</td>
+                                    <td class="py-2 px-1">30</td>
+                                    <td class="py-2 px-1">25</td>
+                                    <td class="py-2 px-1 text-valo-green">500</td>
+                                </tr>
+                                <tr>
+                                    <td class="py-2 px-1 font-bold text-yellow-500">Sheriff</td>
+                                    <td class="py-2 px-1 text-red-400">160 (Tek atış)</td>
+                                    <td class="py-2 px-1">55</td>
+                                    <td class="py-2 px-1">47</td>
+                                    <td class="py-2 px-1 text-valo-green">800</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <div class="tool-card p-6 rounded-xl bg-zinc-900 border-l-4 border-valo-green">
+                    <h4 class="text-2xl font-bold mb-4 text-valo-green">💵 Ekonomik Temeller</h4>
+                    <ul class="space-y-3 text-lg">
+                        <li class="flex justify-between items-center border-b border-white/10 pb-2">
+                            <span class="text-gray-300">Hafif Zırh:</span>
+                            <strong class="font-mono text-xl text-valo-green">400</strong>
+                        </li>
+                        <li class="flex justify-between items-center border-b border-white/10 pb-2">
+                            <span class="text-gray-300">Ağır Zırh:</span>
+                            <strong class="font-mono text-xl text-valo-green">1000</strong>
+                        </li>
+                        <li class="flex justify-between items-center border-b border-white/10 pb-2">
+                            <span class="text-gray-300">Spike Yerleştirme Bonusu:</span>
+                            <strong class="font-mono text-xl text-valo-green">300 (Takım)</strong>
+                        </li>
+                        <li class="flex justify-between items-center">
+                            <span class="text-gray-300">Ölüm Başına Kredi:</span>
+                            <strong class="font-mono text-xl text-valo-green">200</strong>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        ## 🧪 Ajan Yetenek ve Taktik Bilgileri
+        <section class="mb-20">
+            <h3 class="text-4xl font-extrabold mb-8 border-b pb-3" style="color: var(--valo-purple); border-color: var(--valo-purple)50;">
+                🧠 AJAN & TAKTİK VERİLERİ
+            </h3>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+
+                <div class="tool-card p-8 rounded-xl bg-zinc-900 border-l-4 border-valo-orange">
+                    <h4 class="text-2xl font-bold mb-4 text-valo-orange">💥 Raze: Patlayıcı Uzmanı</h4>
+                    <ul class="space-y-3 text-lg">
+                        <li class="flex justify-between items-center border-b border-white/10 pb-2">
+                            <span class="text-gray-300">💣 Bomba Patlayıcısı (Q) Hasarı:</span>
+                            <strong class="font-mono text-xl text-valo-orange">55 - 150</strong>
+                        </li>
+                        <li class="flex justify-between items-center border-b border-white/10 pb-2">
+                            <span class="text-gray-300">🚀 Roket (X) Maksimum Hasar:</span>
+                            <strong class="font-mono text-xl text-valo-orange">150</strong>
+                        </li>
+                        <li class="flex justify-between items-center">
+                            <span class="text-gray-300">🐾 Patpat (C) Süresi:</span>
+                            <strong class="font-mono text-xl text-valo-orange">10 saniye</strong>
+                        </li>
+                    </ul>
+                </div>
+                
+                <div class="tool-card p-8 rounded-xl bg-zinc-900 border-l-4 border-valo-green">
+                    <h4 class="text-2xl font-bold mb-4 text-valo-green">🤖 Killjoy: Savunma Hattı</h4>
+                    <ul class="space-y-3 text-lg">
+                        <li class="flex justify-between items-center border-b border-white/10 pb-2">
+                            <span class="text-gray-300">🧪 Nanosürü Hasar (Saniye):</span>
+                            <strong class="font-mono text-xl text-valo-green">45 HP/s</strong>
+                        </li>
+                        <li class="flex justify-between items-center border-b border-white/10 pb-2">
+                            <span class="text-gray-300">🚨 Alarm Bot Süresi (Kurulu):</span>
+                            <strong class="font-mono text-xl text-valo-green">Sınırsız</strong>
+                        </li>
+                        <li class="flex justify-between items-center">
+                            <span class="text-gray-300">🌍 Tecrit (X) Kurulum Süresi:</span>
+                            <strong class="font-mono text-xl text-valo-green">13 saniye</strong>
+                        </li>
+                    </ul>
+                </div>
+                
+                <div class="tool-card p-8 rounded-xl bg-zinc-900 border-l-4 border-blue-400">
+                    <h4 class="text-2xl font-bold mb-4 text-blue-400">🗺️ Harita Rotasyon Süreleri</h4>
+                    <ul class="space-y-3 text-lg">
+                        <li class="flex justify-between items-center border-b border-white/10 pb-2">
+                            <span class="text-gray-300">Ascent (A'dan B'ye orta):</span>
+                            <strong class="font-mono text-xl text-blue-400">~15 sn</strong>
+                        </li>
+                        <li class="flex justify-between items-center border-b border-white/10 pb-2">
+                            <span class="text-gray-300">Bind (Teleport: A'dan B'ye):</span>
+                            <strong class="font-mono text-xl text-blue-400">~8 sn</strong>
+                        </li>
+                        <li class="flex justify-between items-center">
+                            <span class="text-gray-300">Split (Orta'dan Site'a Koşu):</span>
+                            <strong class="font-mono text-xl text-blue-400">~12 sn</strong>
+                        </li>
+                    </ul>
+                </div>
+
+                <div class="tool-card p-8 rounded-xl bg-zinc-900 border-l-4 border-valo-pink">
+                    <h4 class="text-2xl font-bold mb-4 text-valo-pink">✨ Kompozisyon Tavsiyesi</h4>
+                    <p class="text-gray-400">Optimum takım kompozisyonu için genel kural:</p>
+                    <ul class="list-disc list-inside space-y-2 mt-3 text-lg">
+                        <li class="text-white">**1-2 Kontrolcü** (Omen, Viper)</li>
+                        <li class="text-white">**1-2 Gözcü** (Sova, Skye)</li>
+                        <li class="text-white">**1-2 Düellocu** (Jett, Reyna)</li>
+                        <li class="text-white">**1 Sentinel** (Cypher, Killjoy)</li>
+                    </ul>
+                </div>
+                
+                <div class="tool-card p-8 rounded-xl bg-zinc-900 border-l-4 border-yellow-400">
+                    <h4 class="text-2xl font-bold mb-4 text-yellow-400">🖥️ Oyun İçi Kritik Ayarlar</h4>
+                    <ul class="space-y-3 text-lg">
+                        <li class="flex justify-between items-center border-b border-white/10 pb-2">
+                            <span class="text-gray-300">Görüş Açısı (FOV):</span>
+                            <strong class="font-mono text-xl text-yellow-400">103 (Sabit)</strong>
+                        </li>
+                        <li class="flex justify-between items-center border-b border-white/10 pb-2">
+                            <span class="text-gray-300">Harita Büyüklüğü:</span>
+                            <strong class="font-mono text-xl text-yellow-400">0.8 - 1.0 arası</strong>
+                        </li>
+                        <li class="flex justify-between items-center">
+                            <span class="text-gray-300">Mini Harita Dönüşü:</span>
+                            <strong class="font-mono text-xl text-yellow-400">Sabit/Rotation OFF</strong>
+                        </li>
+                    </ul>
+                </div>
+
+                <div class="tool-card p-8 rounded-xl bg-zinc-900 border-l-4 border-valo-green">
+                    <h4 class="text-2xl font-bold mb-4 text-valo-green">💻 OPTİMİZASYON İPUCU</h4>
+                    <p class="text-gray-400">Windows ve NVIDIA/AMD ayarlarını optimize etmeniz, oyun içi FPS'i artırır ve Input Lag'ı azaltır.</p>
+                    <ul class="list-disc list-inside space-y-2 mt-3 text-lg">
+                        <li class="text-white">Windows "Oyun Modu" **AÇIK** olmalı.</li>
+                        <li class="text-white">Grafik sürücüleri daima **güncel** olmalı.</li>
+                        <li class="text-white">Oyun içindeki "VSync" **kapalı** olmalı.</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        ## 🎯 Crosshair Kodları
+        <section class="mb-20">
+            <h3 class="text-4xl font-extrabold mb-8 border-b pb-3" style="color: var(--primary-color); border-color: var(--primary-color)50;">
+                🎯 PRO & ÖZEL CROSSHAIR KODLARI
+            </h3>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                
+                <div class="tool-card p-6 rounded-xl bg-zinc-900 border-l-4 relative" style="border-color: #60A5FA;">
+                    <h4 class="text-2xl font-bold mb-2" style="color: #60A5FA;">💎 Sentinel's Dot</h4>
+                    <p class="text-sm text-gray-400 mb-3">Tek Nokta (Dot) Stili. Mavi renk.</p>
+                    <code id="crosshair-mine1-code-display" class="hidden-code">0;s;1;P;u;000080FF;o;1;d;1;z;1;0b;0;1b;0;S;s;1.001</code>
+                    <button onclick="copyToClipboard('crosshair-mine1-code-display', 'mine1-copy-status')" class="w-full text-black font-extrabold py-3 rounded-lg shadow-lg mt-2 bg-blue-400 hover:bg-blue-500 transition">
+                        KODU KOPYALA
+                    </button>
+                    <p id="mine1-copy-status" class="text-xs text-lime-400 mt-1 invisible opacity-0 transition-opacity duration-300 text-center"></p>
+                </div>
+
+                <div class="tool-card p-6 rounded-xl bg-zinc-900 border-l-4 relative" style="border-color: #A78BFA;">
+                    <h4 class="text-2xl font-bold mb-2" style="color: #A78BFA;">📦 Precision Box</h4>
+                    <p class="text-sm text-gray-400 mb-3">Kısa Dış Çizgi Stili (Kare)</p>
+                    <code id="crosshair-mine2-code-display" class="hidden-code">0;p;0;s;1;P;c;5;o;1;f;0;0t;1;0l;2;0v;2;0o;2;0a;1;0f;0;1t;0;1l;0;1v;0;1o;0;1a;0</code>
+                    <button onclick="copyToClipboard('crosshair-mine2-code-display', 'mine2-copy-status')" class="w-full text-black font-extrabold py-3 rounded-lg shadow-lg mt-2 bg-purple-400 hover:bg-purple-500 transition">
+                        KODU KOPYALA
+                    </button>
+                    <p id="mine2-copy-status" class="text-xs text-lime-400 mt-1 invisible opacity-0 transition-opacity duration-300 text-center"></p>
+                </div>
+                
+                <div class="tool-card p-6 rounded-xl bg-zinc-900 border-l-4 relative" style="border-color: #F87171;">
+                    <h4 class="text-2xl font-bold mb-2" style="color: #F87171;">🔥 The Tenz Dot</h4>
+                    <p class="text-sm text-gray-400 mb-3">Kırmızı Nokta (Red Dot) | eDPI: 280</p>
+                    <code id="crosshair-trenz-code-display" class="hidden-code">0;s;1;P;c;7;u;FFFF00FF;h;0;f;0;0l;3;0v;3;0o;0;0a;1;0f;0;1b;0;S;c;4;o;1</code>
+                    <button onclick="copyToClipboard('crosshair-trenz-code-display', 'trenz-copy-status')" class="w-full text-black font-extrabold py-3 rounded-lg shadow-lg mt-2 bg-red-400 hover:bg-red-500 transition">
+                        KODU KOPYALA
+                    </button>
+                    <p id="trenz-copy-status" class="text-xs text-lime-400 mt-1 invisible opacity-0 transition-opacity duration-300 text-center"></p>
+                </div>
+                
+                <div class="tool-card p-6 rounded-xl bg-zinc-900 border-l-4 relative" style="border-color: #FBBF24;">
+                    <h4 class="text-2xl font-bold mb-2" style="color: #FBBF24;">🎯 Yay's Chamber</h4>
+                    <p class="text-sm text-gray-400 mb-3">Küçük Beyaz Nokta | eDPI: 320</p>
+                    <code id="crosshair-yay-code-display" class="hidden-code">0;P;c;1;h;0;0l;4;0o;0;0a;1;0f;0;1t;0;1l;0;1o;0;1a;0;1f;0</code>
+                    <button onclick="copyToClipboard('crosshair-yay-code-display', 'yay-copy-status')" class="w-full text-black font-extrabold py-3 rounded-lg shadow-lg mt-2 bg-yellow-400 hover:bg-yellow-500 transition">
+                        KODU KOPYALA
+                    </button>
+                    <p id="yay-copy-status" class="text-xs text-lime-400 mt-1 invisible opacity-0 transition-opacity duration-300 text-center"></p>
+                </div>
+
+                <div class="tool-card p-6 rounded-xl bg-zinc-900 border-l-4 relative" style="border-color: #3B82F6;">
+                    <h4 class="text-2xl font-bold mb-2" style="color: #3B82F6;">➕ Demon1's Cross</h4>
+                    <p class="text-sm text-gray-400 mb-3">Çapraz Yeşil Artı (Cross Green Plus)</p>
+                    <code id="crosshair-demon1-code-display" class="hidden-code">0;P;c;1;o;1;f;0;0t;4;0l;1;0o;0;0a;1;0f;0;1b;0</code>
+                    <button onclick="copyToClipboard('crosshair-demon1-code-display', 'demon1-copy-status')" class="w-full text-black font-extrabold py-3 rounded-lg shadow-lg mt-2 bg-blue-400 hover:bg-blue-500 transition">
+                        KODU KOPYALA
+                    </button>
+                    <p id="demon1-copy-status" class="text-xs text-lime-400 mt-1 invisible opacity-0 transition-opacity duration-300 text-center"></p>
+                </div>
+
+                <div class="tool-card p-6 rounded-xl bg-zinc-900 border-l-4 relative" style="border-color: #A855F7;">
+                    <h4 class="text-2xl font-bold mb-2" style="color: #A855F7;">🌌 C0m's Void Dot</h4>
+                    <p class="text-sm text-gray-400 mb-3">Basit Beyaz Nokta (Simple White Dot)</p>
+                    <code id="crosshair-c0m-code-display" class="hidden-code">0;P;c;1;o;1;f;0;0t;1;0l;0;0v;0;0g;1;0o;1;0a;1;0f;0;1b;0</code>
+                    <button onclick="copyToClipboard('crosshair-c0m-code-display', 'c0m-copy-status')" class="w-full text-black font-extrabold py-3 rounded-lg shadow-lg mt-2 bg-purple-400 hover:bg-purple-500 transition">
+                        KODU KOPYALA
+                    </button>
+                    <p id="c0m-copy-status" class="text-xs text-lime-400 mt-1 invisible opacity-0 transition-opacity duration-300 text-center"></p>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <footer class="bg-black/80 border-t border-white/10 mt-20">
+        <div class="max-w-7xl mx-auto px-6 py-8 text-sm text-gray-500 flex flex-col md:flex-row items-center justify-between">
+            <div>© 2025 Mami’s VALO-HUB DATA CENTER — Tüm Hakları Saklıdır.</div>
+            <div>Kod ve Tasarım: <strong style="color: var(--primary-color);">Mami</strong></div>
+        </div>
+    </footer>
+    
+    <script src="araclar.js"></script> 
+</body>
+</html>
